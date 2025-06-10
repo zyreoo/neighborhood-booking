@@ -2,9 +2,8 @@
   background-color: #626F47;
   padding: 3rem 0;
   color: #F5ECD5;
-  position: fixed;
-  bottom: 0;
   width: 100%;
+  margin-top: auto;
   z-index: 10;
 }
 
