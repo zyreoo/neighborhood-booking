@@ -4,8 +4,18 @@ import Property from '@/models/Property';
 
 export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const location = searchParams.get('location');
+
     await connectDB();
-    const properties = await Property.find();
+    
+    let query = {};
+    if (location) {
+      // Case-insensitive search for location
+      query.location = new RegExp('^' + location + '$', 'i');
+    }
+    
+    const properties = await Property.find(query);
     return NextResponse.json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error);

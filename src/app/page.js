@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './page.module.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Home() {
   const [properties, setProperties] = useState([]);
@@ -29,6 +30,10 @@ export default function Home() {
     }
   };
 
+  const formatLocationUrl = (location) => {
+    return location.toLowerCase().replace(/\s+/g, '-');
+  };
+
   const groupedProperties = properties.reduce((acc, property) => {
     if (!acc[property.location]) {
       acc[property.location] = [];
@@ -46,9 +51,11 @@ export default function Home() {
       <main className={styles.main}>
         {Object.entries(groupedProperties).map(([location, locationProperties]) => (
           <section key={location} className={styles.locationSection}>
-            <h2 className={styles.locationTitle}>
-              Stay in {location} <span className={styles.arrow}>›</span>
-            </h2>
+            <Link href={`/location/${formatLocationUrl(location)}`} className={styles.locationLink}>
+              <h2 className={styles.locationTitle}>
+                Stay in {location} <span className={styles.arrow}>›</span>
+              </h2>
+            </Link>
             <div className={styles.cardsContainer}>
               <div className={styles.cardsScroll}>
                 {locationProperties.map((property) => (

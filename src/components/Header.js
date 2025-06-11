@@ -1,20 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './Header.module.css';
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isLocationPage = pathname.startsWith('/location/');
 
   useEffect(() => {
+    if (isLocationPage) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isLocationPage]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -22,10 +27,10 @@ export default function Header() {
   };
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${isScrolled && !isLocationPage ? styles.scrolled : ''} ${isLocationPage ? styles.static : ''}`}>
       <div className={styles.container}>
         <div className={styles.headerTop}>
-          <div className={`${styles.accommodationTypes} ${isScrolled ? styles.hidden : ''}`}>
+          <div className={styles.accommodationTypes}>
             <button className={styles.typeButton}>
               <span className={styles.typeIcon}>🏨</span>
               <span>Hotel</span>

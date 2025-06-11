@@ -9,6 +9,23 @@
   transition: all 0.3s ease;
 }
 
+.header.static {
+  position: relative;
+  padding: 2rem 0;
+  background-color: #F5ECD5;
+}
+
+.header.static .container {
+  gap: 1.5rem;
+}
+
+.header.static .headerTop,
+.header.static .accommodationTypes {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
 .header.scrolled {
   padding: 1.2rem 0;
   background-color: rgba(245, 236, 213, 0.95);
