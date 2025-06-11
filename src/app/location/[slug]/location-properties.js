@@ -4,25 +4,30 @@ import { useState, useEffect } from 'react';
 import styles from './location-properties.module.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { LocationPageSkeleton } from '@/components/SkeletonLoader';
+import { useParams } from 'next/navigation';
 
-export default function LocationProperties({ params }) {
+export default function LocationProperties() {
+  const params = useParams();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [locationName, setLocationName] = useState('');
   
-  // Convert URL slug back to location name for display
-  const locationName = decodeURIComponent(params.slug)
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-
   useEffect(() => {
-    fetchLocationProperties();
-  }, [params.slug]);
+    if (params?.slug) {
+      const formattedName = decodeURIComponent(params.slug)
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      setLocationName(formattedName);
+      fetchLocationProperties(formattedName);
+    }
+  }, [params?.slug]);
 
-  const fetchLocationProperties = async () => {
+  const fetchLocationProperties = async (name) => {
     try {
-      const response = await fetch(`/api/properties?location=${encodeURIComponent(locationName)}`);
+      const response = await fetch(`/api/properties?location=${encodeURIComponent(name)}`);
       if (!response.ok) {
         throw new Error('Failed to fetch properties');
       }
@@ -38,7 +43,13 @@ export default function LocationProperties({ params }) {
     }
   };
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (loading) return (
+    <div>
+      <Header />
+      <LocationPageSkeleton />
+      <Footer />
+    </div>
+  );
   if (error) return <div className={styles.error}>{error}</div>;
 
   return (

@@ -16,7 +16,7 @@
 }
 
 .locationLink:hover .locationTitle {
-  color: #;
+  color: #626F47;
 }
 
 .locationTitle {
@@ -36,6 +36,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .cardsScroll {

@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { HomePageSkeleton } from '@/components/SkeletonLoader';
 
 export default function Home() {
   const [properties, setProperties] = useState([]);
@@ -42,7 +43,13 @@ export default function Home() {
     return acc;
   }, {});
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (loading) return (
+    <div>
+      <Header />
+      <HomePageSkeleton />
+      <Footer />
+    </div>
+  );
   if (error) return <div className={styles.error}>{error}</div>;
 
   return (
