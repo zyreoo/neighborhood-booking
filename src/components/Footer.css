@@ -192,7 +192,7 @@ body {
   }
 }
 
-/* For very small screens, switch to single column */
+
 @media (max-width: 480px) {
   .destinations-grid {
     grid-template-columns: 1fr;
