@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import styles from './location-properties.module.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -77,7 +78,11 @@ export default function LocationProperties() {
         <div className={styles.contentContainer}>
           <div className={styles.grid}>
             {properties.map((property) => (
-              <div key={property._id} className={styles.card}>
+              <Link
+                key={property._id}
+                href={`/${locationSlug}/${property._id}`}
+                className={styles.card}
+              >
                 <div className={styles.imageContainer}>
                   <img 
                     src={property.imageUrl} 
@@ -90,7 +95,7 @@ export default function LocationProperties() {
                   <h3>{property.title}</h3>
                   <p className={styles.description}>{property.description}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
