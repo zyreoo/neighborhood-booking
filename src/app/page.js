@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import styles from './page.module.css';
-import Header from '../components/Header';
+import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import MainContent from '@/components/MainContent';
 
 export default function Home() {
   const [properties, setProperties] = useState([]);
