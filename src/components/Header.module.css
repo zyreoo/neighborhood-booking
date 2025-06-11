@@ -190,6 +190,12 @@
   height: 18px;
 }
 
+@media (max-width: 1024px) {
+  .header.scrolled .searchWrapper {
+    width: 70%;
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     padding: 1rem 0;
@@ -197,6 +203,7 @@
 
   .container {
     gap: 1rem;
+    padding: 0 0.75rem;
   }
 
   .accommodationTypes {
@@ -220,7 +227,7 @@
 
   .searchInput {
     padding: 0.7rem 1rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .searchButton {
@@ -233,8 +240,21 @@
     height: 16px;
   }
 
+  .header.scrolled {
+    padding: 0.8rem 0;
+  }
+
   .header.scrolled .searchWrapper {
     width: 85%;
+  }
+
+  .header.scrolled .searchInput {
+    padding: 0.6rem 1rem;
+  }
+
+  .header.scrolled .searchButton {
+    width: 30px;
+    height: 30px;
   }
 }
 
@@ -245,6 +265,7 @@
 
   .container {
     padding: 0 0.5rem;
+    gap: 0.75rem;
   }
 
   .accommodationTypes {
@@ -256,6 +277,10 @@
     padding: 0.3rem 0.6rem;
   }
 
+  .typeIcon {
+    font-size: 1.1rem;
+  }
+
   .searchWrapper {
     width: 95%;
   }
@@ -263,5 +288,34 @@
   .searchInput {
     padding: 0.6rem 0.8rem;
     font-size: 0.9rem;
+  }
+
+  .searchButton {
+    width: 28px;
+    height: 28px;
+    right: 6px;
+  }
+
+  .searchIcon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .header.scrolled {
+    padding: 0.6rem 0;
+  }
+
+  .header.scrolled .searchWrapper {
+    width: 90%;
+  }
+
+  .header.scrolled .searchInput {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .header.scrolled .searchButton {
+    width: 26px;
+    height: 26px;
   }
 } 

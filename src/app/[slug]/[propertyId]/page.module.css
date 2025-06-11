@@ -41,7 +41,7 @@
 }
 
 .titleSection h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: 2.5rem;
   color: #2d3748;
   margin: 0 0 16px 0;
   line-height: 1.2;
@@ -51,7 +51,7 @@
 }
 
 .location {
-  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-size: 1.4rem;
   color: #718096;
   margin: 0;
   display: flex;
@@ -62,12 +62,12 @@
 
 .location::before {
   content: "📍";
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: 1.2rem;
 }
 
 .imageGallery {
   width: 100%;
-  height: clamp(250px, 40vh, 500px);
+  height: 500px;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 32px;
@@ -87,7 +87,7 @@
 
 .propertyInfo {
   padding-right: 20px;
-  min-width: 0; /* Prevent content from overflowing */
+  min-width: 0;
 }
 
 .detailsGrid {
@@ -208,42 +208,78 @@
   font-weight: bold;
 }
 
-/* Tablet Breakpoint */
 @media (max-width: 1024px) {
+  .main {
+    margin: 70px auto 35px;
+    padding: 0 14px;
+  }
+
+  .titleSection h1 {
+    font-size: 2.2rem;
+  }
+
+  .location {
+    font-size: 1.2rem;
+  }
+
+  .imageGallery {
+    height: 400px;
+  }
+
+  .contentContainer {
+    gap: 30px;
+  }
+
+  .detailsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin: 60px auto 30px;
+    padding: 0 12px;
+  }
+
+  .titleSection {
+    margin-bottom: 20px;
+  }
+
+  .titleSection h1 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .location {
+    font-size: 1.1rem;
+  }
+
+  .imageGallery {
+    height: 300px;
+    margin-bottom: 24px;
+  }
+
   .contentContainer {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
   }
 
   .propertyInfo {
     padding-right: 0;
   }
 
-  .bookingCard {
-    position: static;
-    margin-top: 0;
-    order: -1; /* Move booking card above property info on tablet/mobile */
-  }
-}
-
-/* Mobile Breakpoint */
-@media (max-width: 768px) {
-  .main {
-    margin: 60px auto 32px;
-    padding: 0 12px;
-  }
-
-  .titleSection {
-    margin-bottom: 16px;
-  }
-
   .detailsGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 12px;
+    margin-bottom: 24px;
   }
 
   .detailCard {
     padding: 12px;
+  }
+
+  .detailIcon {
+    font-size: 20px;
   }
 
   .detailCard h3 {
@@ -254,27 +290,28 @@
     font-size: 0.85rem;
   }
 
+  .description {
+    margin-top: 30px;
+  }
+
   .description h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     margin-bottom: 12px;
   }
 
   .description p {
     font-size: 1rem;
-    line-height: 1.5;
   }
 
   .bookingCard {
-    padding: 16px;
+    position: static;
     border-radius: 12px;
-  }
-
-  .priceContainer {
-    margin-bottom: 16px;
+    padding: 20px;
+    order: -1;
   }
 
   .price {
-    font-size: 1.75rem;
+    font-size: 1.8rem;
   }
 
   .perNight {
@@ -285,60 +322,76 @@
     padding: 14px;
     font-size: 1rem;
   }
-
-  .bookingDetails {
-    margin-top: 16px;
-    padding-top: 16px;
-  }
-
-  .bookingDetails p {
-    font-size: 0.85rem;
-  }
 }
 
-/* Small Mobile Breakpoint */
 @media (max-width: 480px) {
   .main {
-    margin: 48px auto 24px;
-    padding: 0 8px;
+    margin: 50px auto 25px;
+    padding: 0 10px;
   }
 
   .titleSection h1 {
-    margin-bottom: 8px;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .location {
+    font-size: 1rem;
+    gap: 6px;
+  }
+
+  .location::before {
+    font-size: 1rem;
   }
 
   .imageGallery {
+    height: 250px;
+    margin-bottom: 20px;
     border-radius: 8px;
-    margin-bottom: 24px;
+  }
+
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .detailCard {
     padding: 10px;
   }
 
+  .detailIcon {
+    font-size: 18px;
+  }
+
+  .description h2 {
+    font-size: 1.4rem;
+  }
+
+  .description p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
   .bookingCard {
-    padding: 12px;
+    padding: 16px;
     border-radius: 8px;
   }
 
+  .price {
+    font-size: 1.6rem;
+  }
+
+  .perNight {
+    font-size: 0.9rem;
+  }
+
+  .bookButton {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
   .bookingDetails p {
-    font-size: 0.8rem;
-  }
-}
-
-
-@media (max-width: 320px) {
-  .main {
-    padding: 0 4px;
-  }
-
-  .detailCard {
-    flex-direction: column;
-    text-align: center;
-    padding: 12px 8px;
-  }
-
-  .detailIcon {
-    margin-bottom: 4px;
+    font-size: 0.85rem;
+    gap: 6px;
   }
 } 

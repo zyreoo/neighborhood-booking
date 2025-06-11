@@ -1,6 +1,6 @@
 .footer {
   background-color: #626F47;
-  padding: 3rem 0;
+  padding: 2rem 0;
   color: #F5ECD5;
   width: 100%;
   margin-top: auto;
@@ -9,25 +9,24 @@
 
 .destinations-wrapper {
   max-width: 1200px;
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 1.5rem auto;
   padding: 0 1rem;
   border-bottom: 1px solid #A4B465;
-  padding-bottom: 2rem;
+  padding-bottom: 1.5rem;
 }
 
 .destinations-header {
   text-align: left;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #F5ECD5;
+  font-size: 1.5rem;
   font-weight: normal;
+  margin-bottom: 1rem;
+  color: #F5ECD5;
 }
 
 .categories-nav {
   display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
   border-bottom: 1px solid #A4B465;
   padding-bottom: 0.5rem;
 }
@@ -71,17 +70,16 @@
 
 .destinations-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 0.75rem;
 }
 
 .destination-card {
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   cursor: pointer;
   position: relative;
 }
-
 
 .destination-card h3 {
   color: #F5ECD5;
@@ -107,75 +105,86 @@
   margin: 0 auto;
   padding: 0 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
 }
 
 .footer-section h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
   color: #F0BB78;
 }
 
 .footer-section p {
-  line-height: 1.6;
+  line-height: 1.4;
   color: #F5ECD5;
   opacity: 0.9;
+  font-size: 0.9rem;
 }
 
 .footer-bottom {
   text-align: center;
-  margin-top: 2rem;
-  padding-top: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
   border-top: 1px solid #A4B465;
 }
 
 .footer-bottom p {
   color: #F5ECD5;
   opacity: 0.7;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 :root {
   --footer-height: auto;
 }
 
-body {
-  margin-bottom: var(--footer-height);
-  min-height: 100vh;
-  position: relative;
+@media (max-width: 1024px) {
+  .destinations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
+  .footer {
+    padding: 2rem 0;
+  }
+
   .destinations-header {
     font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .categories-nav {
     gap: 1rem;
     overflow-x: auto;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .categories-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .category-button {
     font-size: 1rem;
     white-space: nowrap;
+    padding: 0.4rem 0;
   }
 
   .destinations-grid {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem 2rem;
-    max-height: none;
+    gap: 1rem;
   }
 
   .destination-card {
-    padding: 0.5rem 0;
+    padding: 0.75rem 0;
   }
 
   .destination-card h3 {
     font-size: 1rem;
-    margin-bottom: 0.25rem;
   }
 
   .destination-card p {
@@ -184,18 +193,65 @@ body {
 
   .footer-content {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  
-  .footer-section {
-    justify-content: flex-start;
-    font-size: 1rem;
+
+  .footer-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-section p {
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
   }
 }
 
-
 @media (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 0;
+  }
+
+  .destinations-wrapper {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .destinations-header {
+    font-size: 1.25rem;
+  }
+
   .destinations-grid {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .category-button {
+    font-size: 0.9rem;
+  }
+
+  .destination-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .destination-card p {
+    font-size: 0.8rem;
+  }
+
+  .footer-section h3 {
+    font-size: 1rem;
+  }
+
+  .footer-section p {
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.8rem;
   }
 }
 
