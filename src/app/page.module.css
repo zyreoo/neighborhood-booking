@@ -1,38 +1,69 @@
 .main {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 15rem 5rem 5rem 5rem;
   margin: 0 auto;
+  max-width: 1800px;
 }
 
-.title {
+.locationSection {
+  margin-bottom: 3rem;
+  padding: 0 2rem;
+}
+
+.locationTitle {
   font-size: 2rem;
-  color: #333;
-  margin-bottom: 2rem;
-  text-align: center;
+  color: #222222;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+.arrow {
+  font-size: 1.8rem;
+  color: #222222;
 }
 
-.card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.locationTitle:hover .arrow {
+  transform: translateX(5px);
   transition: transform 0.2s ease;
 }
 
-.card:hover {
-  transform: translateY(-4px);
+.cardsContainer {
+  position: relative;
+  margin-left: -2rem;
+}
+
+.cardsScroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem 0 0.5rem 2rem;
+  gap: 1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-right: 2rem;
+}
+
+.cardsScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 auto;
+  width: 300px;
+  scroll-snap-align: start;
+  position: relative;
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
-  padding-top: 66.67%; /* 3:2 aspect ratio */
+  padding-top: 66.67%;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .image {
@@ -56,36 +87,23 @@
 }
 
 .content {
-  padding: 1.5rem;
+  padding: 1rem 0;
 }
 
-.content h2 {
+.content h3 {
   margin: 0;
-  font-size: 1.25rem;
-  color: #333;
-}
-
-.location {
-  color: #666;
-  margin: 0.5rem 0;
-}
-
-.details {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  color: #666;
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  color: #222222;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .description {
   color: #666;
-  margin: 0.5rem 0 0;
   font-size: 0.9rem;
   line-height: 1.5;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -94,12 +112,62 @@
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
-  color: #666;
+  color: #222222;
 }
 
 .error {
   text-align: center;
   padding: 2rem;
-  color: #e74c3c;
+  color: #FF385C;
   font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 8rem 0 1rem 0;
+  }
+
+  .locationSection {
+    padding: 0 1rem;
+  }
+
+  .cardsContainer {
+    margin-left: -1rem;
+  }
+
+  .cardsScroll {
+    padding-left: 1rem;
+    margin-right: 3rem;
+  }
+
+  .card {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 8rem 0 0.5rem 0;
+  }
+
+  .locationSection {
+    padding: 0 1rem;
+  }
+
+  .cardsContainer {
+    margin-left: -0.25rem;
+  }
+
+  .cardsScroll {
+    padding-left: 1rem;
+    margin-right: 1.5rem;
+  }
+
+  .card {
+    width: 200px;
+  }
+
+  .locationTitle {
+    padding-left: 0.75rem;
+  }
 } 

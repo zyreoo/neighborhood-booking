@@ -29,6 +29,14 @@ export default function Home() {
     }
   };
 
+  const groupedProperties = properties.reduce((acc, property) => {
+    if (!acc[property.location]) {
+      acc[property.location] = [];
+    }
+    acc[property.location].push(property);
+    return acc;
+  }, {});
+
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
@@ -36,34 +44,33 @@ export default function Home() {
     <div>
       <Header />
       <main className={styles.main}>
-        <h1 className={styles.title}>Available Properties</h1>
-        
-        <div className={styles.grid}>
-          {properties.map((property) => (
-            <div key={property._id} className={styles.card}>
-              <div className={styles.imageContainer}>
-                <img 
-                  src={property.imageUrl} 
-                  alt={property.title}
-                  className={styles.image}
-                />
-                <div className={styles.price}>${property.price}/night</div>
-              </div>
-              <div className={styles.content}>
-                <h2>{property.title}</h2>
-                <p className={styles.location}>{property.location}</p>
-                <div className={styles.details}>
-                  <span>{property.bedrooms || 1} beds</span>
-                  <span>•</span>
-                  <span>{property.bathrooms || 1} baths</span>
-                  <span>•</span>
-                  <span>Up to {property.maxGuests || 2} guests</span>
-                </div>
-                <p className={styles.description}>{property.description}</p>
+        {Object.entries(groupedProperties).map(([location, locationProperties]) => (
+          <section key={location} className={styles.locationSection}>
+            <h2 className={styles.locationTitle}>
+              Stay in {location} <span className={styles.arrow}>›</span>
+            </h2>
+            <div className={styles.cardsContainer}>
+              <div className={styles.cardsScroll}>
+                {locationProperties.map((property) => (
+                  <div key={property._id} className={styles.card}>
+                    <div className={styles.imageContainer}>
+                      <img 
+                        src={property.imageUrl} 
+                        alt={property.title}
+                        className={styles.image}
+                      />
+                      <div className={styles.price}>${property.price}/night</div>
+                    </div>
+                    <div className={styles.content}>
+                      <h3>{property.title}</h3>
+                      <p className={styles.description}>{property.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </section>
+        ))}
       </main>
       <Footer />
     </div>
