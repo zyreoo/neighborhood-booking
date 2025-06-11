@@ -11,7 +11,7 @@ export async function GET(request) {
     
     let query = {};
     if (location) {
-      // Case-insensitive search for location
+
       query.location = new RegExp('^' + location + '$', 'i');
     }
     
