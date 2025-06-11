@@ -137,7 +137,7 @@
 }
 
 :root {
-  --footer-height: 400px;
+  --footer-height: auto;
 }
 
 body {
