@@ -58,7 +58,7 @@ export default function Home() {
       <main className={styles.main}>
         {Object.entries(groupedProperties).map(([location, locationProperties]) => (
           <section key={location} className={styles.locationSection}>
-            <Link href={`/location/${formatLocationUrl(location)}`} className={styles.locationLink}>
+            <Link href={`/${formatLocationUrl(location)}`} className={styles.locationLink}>
               <h2 className={styles.locationTitle}>
                 Stay in {location} <span className={styles.arrow}>›</span>
               </h2>

@@ -8,7 +8,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const isLocationPage = pathname.startsWith('/location/');
+  const isLocationPage = pathname !== '/';
 
   useEffect(() => {
     if (isLocationPage) return;
