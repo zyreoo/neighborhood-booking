@@ -14,7 +14,7 @@ export default function LocationProperties() {
   const params = useParams();
   const locationSlug = params.slug;
 
-  // Convert slug back to location name (e.g., "san-mateo" -> "San Mateo")
+
   const formatSlugToLocation = (slug) => {
     return slug
       .split('-')
@@ -31,7 +31,6 @@ export default function LocationProperties() {
         }
         const data = await response.json();
         
-        // Filter properties for the specific location
         const locationName = formatSlugToLocation(locationSlug);
         const filteredProperties = data.filter(
           property => property.location === locationName
@@ -74,24 +73,26 @@ export default function LocationProperties() {
     <div>
       <Header />
       <main className={styles.main}>
-        <h1 className={styles.title}>Properties in {locationName}</h1>
-        <div className={styles.grid}>
-          {properties.map((property) => (
-            <div key={property._id} className={styles.card}>
-              <div className={styles.imageContainer}>
-                <img 
-                  src={property.imageUrl} 
-                  alt={property.title}
-                  className={styles.image}
-                />
-                <div className={styles.price}>${property.price}/night</div>
+        <h1 className={styles.title}> Welcome to {locationName}</h1>
+        <div className={styles.contentContainer}>
+          <div className={styles.grid}>
+            {properties.map((property) => (
+              <div key={property._id} className={styles.card}>
+                <div className={styles.imageContainer}>
+                  <img 
+                    src={property.imageUrl} 
+                    alt={property.title}
+                    className={styles.image}
+                  />
+                  <div className={styles.price}>${property.price}/night</div>
+                </div>
+                <div className={styles.content}>
+                  <h3>{property.title}</h3>
+                  <p className={styles.description}>{property.description}</p>
+                </div>
               </div>
-              <div className={styles.content}>
-                <h3>{property.title}</h3>
-                <p className={styles.description}>{property.description}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </main>
       <Footer />
