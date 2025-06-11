@@ -7,22 +7,22 @@
 .title {
   position: relative;
   width: 100%;
-  height: 450px;
+  height: clamp(250px, 40vh, 450px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4rem;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+  margin-bottom: 2rem;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
               url('https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  font-size: 4.5rem;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-weight: 600;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
 }
@@ -30,10 +30,10 @@
 .title::after {
   content: '';
   position: absolute;
-  bottom: 40px;
+  bottom: clamp(20px, 5vh, 40px);
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
+  width: clamp(60px, 10vw, 120px);
   height: 4px;
   background: #ffffff;
   border-radius: 2px;
@@ -42,13 +42,13 @@
 .contentContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
   margin-top: 2rem;
 }
 
@@ -58,6 +58,9 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -90,21 +93,26 @@
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-weight: 600;
+  font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .content {
   padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .content h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.25rem);
   color: #333;
+  line-height: 1.4;
 }
 
 .description {
   color: #666;
-  font-size: 0.9rem;
+  font-size: clamp(0.875rem, 2vw, 0.9rem);
   line-height: 1.5;
   margin: 0;
   display: -webkit-box;
@@ -116,6 +124,75 @@
 .error {
   color: red;
   text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  background-color: #fff5f5;
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+  .title {
+    background-attachment: scroll;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+  .title {
+    height: clamp(200px, 30vh, 300px);
+    margin-bottom: 1.5rem;
+  }
+
+  .contentContainer {
+    padding: 1rem;
+  }
+
+  .grid {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .card {
+    border-radius: 8px;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .price {
+    padding: 0.4rem 0.8rem;
+    border-radius: 16px;
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 480px) {
+  .title {
+    height: clamp(150px, 25vh, 200px);
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contentContainer {
+    padding: 0.75rem;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .content {
+    padding: 0.875rem;
+  }
 } 
