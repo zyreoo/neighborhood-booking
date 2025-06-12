@@ -46,11 +46,26 @@
   padding: 0.5rem;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
 }
 
 .cardsScroll::-webkit-scrollbar {
-  display: none;
+  height: 6px;
+}
+
+.cardsScroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.cardsScroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.cardsScroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .card {
@@ -58,12 +73,26 @@
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   background: #fff;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
 }
 
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .imageContainer {
@@ -75,6 +104,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.imageContainer:hover .image {
+  transform: scale(1.05);
 }
 
 .price {
@@ -120,7 +154,6 @@
 }
 
 .mainTitle {
-
   font-size: 3rem;
   font-weight: 600;
   color: #626F47;
