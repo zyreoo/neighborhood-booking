@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 const Footer = () => {
   const [activeSection, setActiveSection] = useState('popular');
+  const [prevSection, setPrevSection] = useState('popular');
   const [locations, setLocations] = useState({
     popular: { title: "Popular", locations: [] },
     beach: { title: "Beach", locations: [] },
@@ -18,7 +19,6 @@ const Footer = () => {
         const response = await fetch('/api/properties');
         const properties = await response.json();
         
-        // Group properties by location and get property types
         const locationMap = properties.reduce((acc, property) => {
           if (!acc[property.location]) {
             acc[property.location] = {
@@ -30,25 +30,21 @@ const Footer = () => {
           return acc;
         }, {});
 
-        // Convert to array and sort by number of properties
         const sortedLocations = Object.values(locationMap)
           .map(loc => ({
             name: loc.name,
-            type: Array.from(loc.types)[0] // Use the first property type
+            type: Array.from(loc.types)[0]
           }))
           .sort((a, b) => a.name.localeCompare(b.name));
 
-        // Get top locations from bookings
         const bookingsResponse = await fetch('/api/bookings');
         const topBookedLocations = await bookingsResponse.json();
         
-        // Create sections
         const popularLocations = topBookedLocations.map(booking => ({
           name: booking.location,
           type: locationMap[booking.location]?.types.values().next().value || 'Luxury Stay'
         }));
 
-        // Split remaining locations between beach and mountain sections
         const remainingLocations = sortedLocations.filter(
           loc => !popularLocations.find(pop => pop.name === loc.name)
         );
@@ -82,6 +78,69 @@ const Footer = () => {
     router.push(`/${urlLocation}`);
   };
 
+  const handleSectionChange = (newSection) => {
+    setPrevSection(activeSection);
+    setActiveSection(newSection);
+    
+    // Get all buttons and find indices
+    const buttons = Array.from(document.querySelectorAll('.category-button'));
+    const prevIndex = buttons.findIndex(btn => btn.textContent.trim() === locations[prevSection].title);
+    const newIndex = buttons.findIndex(btn => btn.textContent.trim() === locations[newSection].title);
+    
+    if (prevIndex !== -1 && newIndex !== -1) {
+      const navRect = document.querySelector('.categories-nav').getBoundingClientRect();
+      
+      // Get the start and end positions
+      const startButton = buttons[prevIndex];
+      const endButton = buttons[newIndex];
+      const startRect = startButton.getBoundingClientRect();
+      const endRect = endButton.getBoundingClientRect();
+      
+      // Calculate the total width to cover
+      const startX = startRect.left - navRect.left;
+      const endX = endRect.left - navRect.left;
+      const totalWidth = endX + endRect.width - startX;
+      
+      // Create the flowing underline
+      const underline = document.createElement('div');
+      underline.style.position = 'absolute';
+      underline.style.bottom = '0';
+      underline.style.height = '2px';
+      underline.style.backgroundColor = '#F0BB78';
+      underline.style.transition = 'all 0.35s cubic-bezier(0.4, 0.0, 0.2, 1)';
+      
+      // Set initial position
+      underline.style.left = `${startX}px`;
+      underline.style.width = `${startRect.width}px`;
+      
+      document.querySelector('.categories-nav').appendChild(underline);
+      
+      // Trigger the flowing animation
+      requestAnimationFrame(() => {
+        if (newIndex > prevIndex) {
+          // Moving right: expand right then contract left
+          underline.style.width = `${totalWidth}px`;
+          setTimeout(() => {
+            underline.style.left = `${endX}px`;
+            underline.style.width = `${endRect.width}px`;
+          }, 175);
+        } else {
+          // Moving left: expand left then contract right
+          underline.style.left = `${endX}px`;
+          underline.style.width = `${totalWidth}px`;
+          setTimeout(() => {
+            underline.style.width = `${endRect.width}px`;
+          }, 175);
+        }
+      });
+      
+      // Clean up
+      setTimeout(() => {
+        underline.remove();
+      }, 350);
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="destinations-wrapper">
@@ -91,7 +150,7 @@ const Footer = () => {
             <button
               key={key}
               className={`category-button ${activeSection === key ? 'active' : ''}`}
-              onClick={() => setActiveSection(key)}
+              onClick={() => handleSectionChange(key)}
             >
               {title}
             </button>
