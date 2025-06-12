@@ -36,6 +36,42 @@ export default function PropertyPage() {
 
     fetchProperty();
   }, [params.propertyId]);
+  const handleBooking = async () => {
+    try {
+      console.log('📚 Attempting to book property:', {
+        propertyId: params.propertyId,
+        location: property.location,
+        propertyTitle: property.title
+      });
+
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          propertyId: params.propertyId,
+          location: property.location
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to record booking');
+      }
+
+      const result = await response.json();
+      console.log('✅ Booking successful:', {
+        location: property.location,
+        newBookingCount: result.booking.bookingCount
+      });
+
+      // You could add additional booking flow here
+      alert(`Booking recorded successfully! This location now has ${result.booking.bookingCount} bookings.`);
+    } catch (error) {
+      console.error('❌ Error recording booking:', error);
+      alert('Failed to record booking. Please try again.');
+    }
+  };
 
   if (loading) {
     return (
@@ -127,7 +163,7 @@ export default function PropertyPage() {
               <span className={styles.perNight}>per night</span>
             </div>
             
-            <button className={styles.bookButton}>
+            <button className={styles.bookButton} onClick={handleBooking}>
               Book Now
             </button>
 

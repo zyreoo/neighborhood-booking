@@ -3,7 +3,6 @@ import connectDB from '@/lib/mongodb';
 import Property from '@/models/Property';
 
 const sampleProperties = [
-  // San Mateo Properties
   {
     title: "Modern Studio in Downtown",
     location: "San Mateo",
@@ -35,7 +34,6 @@ const sampleProperties = [
     maxGuests: 4
   },
 
-  // Sausalito Properties
   {
     title: "Waterfront Villa",
     location: "Sausalito",
@@ -67,7 +65,6 @@ const sampleProperties = [
     maxGuests: 4
   },
 
-  // Mill Valley Properties
   {
     title: "Redwood Retreat",
     location: "Mill Valley",
@@ -89,7 +86,7 @@ const sampleProperties = [
     maxGuests: 3
   },
 
-  // Tiburon Properties
+
   {
     title: "Bay Front Estate",
     location: "Tiburon",
@@ -111,7 +108,6 @@ const sampleProperties = [
     maxGuests: 6
   },
 
-  // San Carlos Properties
   {
     title: "Charming Craftsman",
     location: "San Carlos",
@@ -131,6 +127,90 @@ const sampleProperties = [
     bedrooms: 2,
     bathrooms: 2.5,
     maxGuests: 4
+  },
+
+  {
+    title: "Silicon Valley Smart Home",
+    location: "Palo Alto",
+    price: 495,
+    imageUrl: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+    description: "Tech-enabled luxury home in prime Palo Alto location",
+    bedrooms: 3,
+    bathrooms: 2.5,
+    maxGuests: 6
+  },
+  {
+    title: "University Avenue Apartment",
+    location: "Palo Alto",
+    price: 275,
+    imageUrl: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
+    description: "Modern apartment steps from Stanford University",
+    bedrooms: 2,
+    bathrooms: 2,
+    maxGuests: 4
+  },
+
+  {
+    title: "Tech Hub Haven",
+    location: "Menlo Park",
+    price: 420,
+    imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+    description: "Elegant home near major tech companies",
+    bedrooms: 3,
+    bathrooms: 2,
+    maxGuests: 6
+  },
+  {
+    title: "Sand Hill Classic",
+    location: "Menlo Park",
+    price: 380,
+    imageUrl: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde",
+    description: "Traditional home with modern amenities",
+    bedrooms: 2,
+    bathrooms: 2,
+    maxGuests: 4
+  },
+
+  {
+    title: "Avenue Shopping Retreat",
+    location: "Burlingame",
+    price: 290,
+    imageUrl: "https://images.unsplash.com/photo-1600566752355-35792bedcfea",
+    description: "Charming home near Burlingame Avenue shopping",
+    bedrooms: 2,
+    bathrooms: 2,
+    maxGuests: 4
+  },
+  {
+    title: "Airport Convenience Suite",
+    location: "Burlingame",
+    price: 195,
+    imageUrl: "https://images.unsplash.com/photo-1600585154526-990dced4db0d",
+    description: "Modern suite minutes from SFO",
+    bedrooms: 1,
+    bathrooms: 1,
+    maxGuests: 2
+  },
+
+  {
+    title: "Port Royal Residence",
+    location: "Redwood City",
+    price: 340,
+    imageUrl: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    description: "Waterfront property near the port",
+    bedrooms: 3,
+    bathrooms: 2,
+    maxGuests: 6
+  },
+  {
+    title: "Downtown Tech Loft",
+    location: "Redwood City",
+    price: 260,
+    imageUrl: "https://images.unsplash.com/photo-1600607687644-c7171b42498b",
+    description: "Modern loft in revitalized downtown",
+    bedrooms: 1,
+    bathrooms: 1,
+    maxGuests: 3
   }
 ];
 
@@ -138,10 +218,8 @@ export async function GET() {
   try {
     await connectDB();
     
-    // Clear existing properties
     await Property.deleteMany({});
     
-    // Insert new properties
     const properties = await Property.insertMany(sampleProperties);
     
     return NextResponse.json({ 
