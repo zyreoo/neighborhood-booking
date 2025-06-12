@@ -81,6 +81,26 @@
   padding: 0.75rem 0;
   cursor: pointer;
   position: relative;
+  transition: transform 0.2s ease;
+}
+
+.destination-card:hover {
+  transform: translateY(-2px);
+}
+
+.destination-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #F0BB78;
+  transition: width 0.3s ease;
+}
+
+.destination-card:hover::after {
+  width: 100%;
 }
 
 .destination-card h3 {

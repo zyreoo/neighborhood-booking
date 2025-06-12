@@ -1,40 +1,85 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Footer.css';
+import { useRouter } from 'next/navigation';
 
 const Footer = () => {
   const [activeSection, setActiveSection] = useState('popular');
+  const [locations, setLocations] = useState({
+    popular: { title: "Popular", locations: [] },
+    beach: { title: "Beach", locations: [] },
+    mountains: { title: "Mountains", locations: [] }
+  });
+  const router = useRouter();
 
-  const destinations = {
-    popular: {
-      title: "Popular",
-      locations: [
-        { name: "Cleveland", type: "Condo rentals" },
-        { name: "Philadelphia", type: "Monthly Rentals" },
-        { name: "Minneapolis", type: "Vacation rentals" },
-        { name: "Galveston", type: "Condo rentals" },
-        { name: "Tokyo", type: "Condo rentals" },
-        { name: "London", type: "Apartment rentals" }
-      ]
-    },
-    beach: {
-      title: "Beach",
-      locations: [
-        { name: "North Myrtle Beach", type: "Monthly Rentals" },
-        { name: "West Palm Beach", type: "Vacation rentals" },
-        { name: "Orange Beach", type: "House rentals" },
-        { name: "Gulf Shores", type: "Villa rentals" }
-      ]
-    },
-    mountains: {
-      title: "Mountains",
-      locations: [
-        { name: "Pocono Mountains", type: "Cottage rentals" },
-        { name: "Portland", type: "House rentals" },
-        { name: "Nice", type: "Villa rentals" },
-        { name: "Barcelona", type: "Apartment rentals" }
-      ]
-    }
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('/api/properties');
+        const properties = await response.json();
+        
+        // Group properties by location and get property types
+        const locationMap = properties.reduce((acc, property) => {
+          if (!acc[property.location]) {
+            acc[property.location] = {
+              name: property.location,
+              types: new Set()
+            };
+          }
+          acc[property.location].types.add(property.type || 'House');
+          return acc;
+        }, {});
+
+        // Convert to array and sort by number of properties
+        const sortedLocations = Object.values(locationMap)
+          .map(loc => ({
+            name: loc.name,
+            type: Array.from(loc.types)[0] // Use the first property type
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Get top locations from bookings
+        const bookingsResponse = await fetch('/api/bookings');
+        const topBookedLocations = await bookingsResponse.json();
+        
+        // Create sections
+        const popularLocations = topBookedLocations.map(booking => ({
+          name: booking.location,
+          type: locationMap[booking.location]?.types.values().next().value || 'Luxury Stay'
+        }));
+
+        // Split remaining locations between beach and mountain sections
+        const remainingLocations = sortedLocations.filter(
+          loc => !popularLocations.find(pop => pop.name === loc.name)
+        );
+        
+        const midPoint = Math.ceil(remainingLocations.length / 2);
+        
+        setLocations({
+          popular: {
+            title: "Popular",
+            locations: popularLocations
+          },
+          beach: {
+            title: "Coastal Areas",
+            locations: remainingLocations.slice(0, midPoint)
+          },
+          mountains: {
+            title: "Bay Area",
+            locations: remainingLocations.slice(midPoint)
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
+  const handleLocationClick = (locationName) => {
+    const urlLocation = locationName.toLowerCase().replace(/\s+/g, '-');
+    router.push(`/${urlLocation}`);
   };
 
   return (
@@ -42,7 +87,7 @@ const Footer = () => {
       <div className="destinations-wrapper">
         <h2 className="destinations-header">Inspiration for future getaways</h2>
         <div className="categories-nav">
-          {Object.entries(destinations).map(([key, { title }]) => (
+          {Object.entries(locations).map(([key, { title }]) => (
             <button
               key={key}
               className={`category-button ${activeSection === key ? 'active' : ''}`}
@@ -53,8 +98,12 @@ const Footer = () => {
           ))}
         </div>
         <div className="destinations-grid">
-          {destinations[activeSection].locations.map((location, index) => (
-            <div key={index} className="destination-card">
+          {locations[activeSection].locations.map((location, index) => (
+            <div 
+              key={index} 
+              className="destination-card"
+              onClick={() => handleLocationClick(location.name)}
+            >
               <h3>{location.name}</h3>
               <p>{location.type}</p>
             </div>
@@ -73,15 +122,15 @@ const Footer = () => {
         <div className="footer-section">
           <h3>About Us</h3>
           <p>
-            We specialize in showcasing the best destinations across Romania,
-            from the healing salt mines of Praid to the vibrant streets of Bucuresti.
+            We specialize in showcasing the best destinations across the Bay Area,
+            from the vibrant streets of San Francisco to the tech hub of Palo Alto.
           </p>
         </div>
         <div className="footer-section">
           <h3>Quick Links</h3>
           <p>
             Discover more about our services, travel guides, and special offers
-            to make your Romanian adventure unforgettable.
+            to make your Bay Area adventure unforgettable.
           </p>
         </div>
       </div>
