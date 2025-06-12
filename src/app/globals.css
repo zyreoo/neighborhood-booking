@@ -48,7 +48,7 @@ img {
   display: block;
 }
 
-/* For Webkit browsers */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
