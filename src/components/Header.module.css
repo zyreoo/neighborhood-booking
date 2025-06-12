@@ -79,8 +79,45 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   transition: all 0.3s ease;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #626F47;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: rgba(164, 180, 101, 0.1);
+  color: #A4B465;
+  transform: translateX(-2px);
+}
+
+.homeLink {
+  text-decoration: none;
+  color: #626F47;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.homeLink:hover {
+  color: #A4B465;
 }
 
 .accommodationTypes {
@@ -256,6 +293,19 @@
     width: 30px;
     height: 30px;
   }
+
+  .homeLink {
+    font-size: 1rem;
+  }
+  
+  .backButton {
+    padding: 0.4rem;
+  }
+  
+  .backButton svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -317,5 +367,18 @@
   .header.scrolled .searchButton {
     width: 26px;
     height: 26px;
+  }
+
+  .homeLink {
+    font-size: 0.9rem;
+  }
+  
+  .backButton {
+    padding: 0.3rem;
+  }
+  
+  .backButton svg {
+    width: 18px;
+    height: 18px;
   }
 } 

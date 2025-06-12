@@ -30,6 +30,32 @@ export default function Header() {
     <header className={`${styles.header} ${isScrolled && !isLocationPage ? styles.scrolled : ''} ${isLocationPage ? styles.static : ''}`}>
       <div className={styles.container}>
         <div className={styles.headerTop}>
+          <div className={styles.navigation}>
+            {isLocationPage && (
+              <button 
+                onClick={() => window.history.back()} 
+                className={styles.backButton}
+                aria-label="Go back"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="24" 
+                  height="24" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+              </button>
+            )}
+            <a href="/" className={styles.homeLink}>
+              Cazari Romania
+            </a>
+          </div>
           <div className={styles.accommodationTypes}>
             <button className={styles.typeButton}>
               <span className={styles.typeIcon}>🏨</span>
