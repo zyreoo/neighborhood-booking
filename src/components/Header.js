@@ -105,20 +105,20 @@ export default function Header() {
               Cazari Romania
             </a>
           </div>
-        </div>
-        <div className={styles.accommodationTypes}>
-          <button className={styles.typeButton}>
-            <span className={styles.typeIcon}>🏨</span>
-            <span>Hotel</span>
-          </button>
-          <button className={styles.typeButton}>
-            <span className={styles.typeIcon}>🏡</span>
-            <span>Pensiune</span>
-          </button>
-          <button className={styles.typeButton}>
-            <span className={styles.typeIcon}>🌲</span>
-            <span>Cabana</span>
-          </button>
+          <div className={styles.accommodationTypes}>
+            <button className={styles.typeButton}>
+              <span className={styles.typeIcon}>🏨</span>
+              <span>Hotel</span>
+            </button>
+            <button className={styles.typeButton}>
+              <span className={styles.typeIcon}>🏡</span>
+              <span>Pensiune</span>
+            </button>
+            <button className={styles.typeButton}>
+              <span className={styles.typeIcon}>🌲</span>
+              <span>Cabana</span>
+            </button>
+          </div>
         </div>
         <div className={styles.searchContainer} ref={suggestionsRef}>
           <form onSubmit={handleSearch} className={styles.searchForm}>

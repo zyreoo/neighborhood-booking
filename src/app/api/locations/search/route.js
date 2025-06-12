@@ -13,12 +13,10 @@ export async function GET(request) {
 
     await connectDB();
 
-    // Find unique locations that match the query
     const locations = await Property.distinct('location', {
       location: new RegExp(query, 'i')
     });
 
-    // Sort locations by how closely they match the query
     const sortedLocations = locations.sort((a, b) => {
       const aStartsWithQuery = a.toLowerCase().startsWith(query.toLowerCase());
       const bStartsWithQuery = b.toLowerCase().startsWith(query.toLowerCase());
