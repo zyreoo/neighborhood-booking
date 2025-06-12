@@ -65,7 +65,7 @@ export default function Home() {
     <div>
       <Header />
       <main className={styles.main}>
-        <h1 className={styles.mainTitle}>Most Popular Destinations</h1>
+        <h1 className={styles.mainTitle}>Find Your Perfect Stay</h1>
         {topLocations.map((locationData) => {
           const locationProperties = groupedProperties[locationData.location] || [];
           return (
