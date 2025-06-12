@@ -1,6 +1,6 @@
 .header {
   background-color: #F5ECD5;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   box-shadow: 0 2px 4px rgba(98, 111, 71, 0.15);
   position: fixed;
   width: 100%;
@@ -11,7 +11,7 @@
 
 .header.static {
   position: relative;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   background-color: #F5ECD5;
 }
 
@@ -27,12 +27,12 @@
 }
 
 .header.scrolled {
-  padding: 1.2rem 0;
+  padding: 0.8rem 0;
   background-color: rgba(245, 236, 213, 0.95);
 }
 
 .header.scrolled .container {
-  gap: 0;
+  gap: 0.5rem;
 }
 
 .header.scrolled .searchWrapper {
@@ -51,17 +51,12 @@
 }
 
 .header.scrolled .headerTop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  opacity: 0;
   pointer-events: none;
 }
 
 .header.scrolled .accommodationTypes {
-  opacity: 0;
-  transform: translateY(-10px);
+  display: none;
 }
 
 .container {
@@ -70,16 +65,15 @@
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+  gap: 1.2rem;
   position: relative;
 }
 
 .headerTop {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   transition: all 0.3s ease;
 }
 
@@ -124,6 +118,7 @@
   display: flex;
   gap: 1.5rem;
   transition: all 0.3s ease;
+  justify-content: center;
 }
 
 .accommodationTypes.hidden {
@@ -158,18 +153,25 @@
   line-height: 1;
 }
 
+.searchContainer {
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+}
+
 .searchForm {
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 1000px;
   position: relative;
   z-index: 1;
 }
 
 .searchWrapper {
   position: relative;
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: center;
   margin: 0 auto;
@@ -227,20 +229,82 @@
   height: 18px;
 }
 
+.suggestions {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background-color: #F5ECD5;
+  border: 2px solid #A4B465;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(98, 111, 71, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+}
+
+.suggestions li {
+  margin: 0;
+  padding: 0;
+}
+
+.suggestionButton {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #626F47;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.suggestionButton:hover {
+  background-color: #A4B465;
+  color: #F5ECD5;
+}
+
+.locationIcon {
+  color: #626F47;
+}
+
+.suggestionButton:hover .locationIcon {
+  color: #F5ECD5;
+}
+
 @media (max-width: 1024px) {
   .header.scrolled .searchWrapper {
-    width: 70%;
+    width: 90%;
   }
 }
 
 @media (max-width: 768px) {
   .header {
     padding: 1rem 0;
+    min-height: 90px;
+  }
+
+  .header.scrolled {
+    padding: 0.5rem 0;
+    min-height: 70px;
   }
 
   .container {
-    gap: 1rem;
+    gap: 0.8rem;
     padding: 0 0.75rem;
+  }
+
+  .headerTop {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .accommodationTypes {
@@ -260,10 +324,10 @@
 
   .searchWrapper {
     width: 90%;
+    margin: 0 auto;
   }
 
   .searchInput {
-    display: none;
     padding: 0.7rem 1rem;
     font-size: 0.95rem;
   }
@@ -276,10 +340,6 @@
   .searchIcon {
     width: 16px;
     height: 16px;
-  }
-
-  .header.scrolled {
-    padding: 0.8rem 0;
   }
 
   .header.scrolled .searchWrapper {
@@ -297,6 +357,7 @@
 
   .homeLink {
     font-size: 1rem;
+    margin-top: 0.5rem;
   }
   
   .backButton {
@@ -312,11 +373,17 @@
 @media (max-width: 480px) {
   .header {
     padding: 0.8rem 0;
+    min-height: 80px;
+  }
+
+  .header.scrolled {
+    padding: 0.4rem 0;
+    min-height: 60px;
   }
 
   .container {
     padding: 0 0.5rem;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .accommodationTypes {
@@ -352,10 +419,6 @@
     height: 14px;
   }
 
-  .header.scrolled {
-    padding: 0.6rem 0;
-  }
-
   .header.scrolled .searchWrapper {
     width: 90%;
   }
@@ -372,6 +435,7 @@
 
   .homeLink {
     font-size: 0.9rem;
+    margin-top: 0.3rem;
   }
   
   .backButton {
