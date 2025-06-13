@@ -280,6 +280,26 @@
   color: #F5ECD5;
 }
 
+.profileButton {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #626F47;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.profileButton:hover {
+  background-color: rgba(164, 180, 101, 0.1);
+  color: #A4B465;
+  transform: scale(1.05);
+}
+
 @media (max-width: 1024px) {
   .header.scrolled .searchWrapper {
     width: 90%;
