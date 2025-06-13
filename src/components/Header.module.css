@@ -71,8 +71,8 @@
 
 .headerTop {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
   align-items: center;
   transition: all 0.3s ease;
 }
@@ -81,7 +81,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  flex: 3;
 }
 
 .backButton {
@@ -120,6 +119,7 @@
   gap: 1.5rem;
   transition: all 0.3s ease;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .accommodationTypes.hidden {
@@ -292,6 +292,7 @@
   border-radius: 50%;
   transition: all 0.2s ease;
   margin-left: auto;
+  justify-self: end;
 }
 
 .profileButton:hover {
@@ -323,13 +324,11 @@
   }
 
   .headerTop {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .navigation {
-    width: 100%;
     justify-content: center;
   }
 
@@ -393,6 +392,12 @@
   .backButton svg {
     width: 20px;
     height: 20px;
+  }
+
+  .profileButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 }
 
@@ -471,5 +476,9 @@
   .backButton svg {
     width: 18px;
     height: 18px;
+  }
+
+  .profileButton {
+    padding: 0.3rem;
   }
 } 
