@@ -29,7 +29,7 @@ export async function POST(request) {
 
     return NextResponse.json({ success: true, booking });
   } catch (error) {
-    console.error('❌ Booking POST Error:', error);
+    console.error('Booking POST Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -64,7 +64,7 @@ export async function GET() {
 
     return NextResponse.json(topLocations);
   } catch (error) {
-    console.error('❌ Booking GET Error:', error);
+    console.error('Booking GET Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 } 

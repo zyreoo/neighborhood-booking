@@ -13,7 +13,6 @@ export function middleware(request) {
     response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
   }
 
-  // Add caching headers for API responses
   if (request.nextUrl.pathname.startsWith('/api/')) {
     response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
   }
