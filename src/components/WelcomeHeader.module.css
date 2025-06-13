@@ -1,0 +1,28 @@
+.welcomeSection {
+  padding: 2rem;
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 1200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.welcomeTitle {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.welcomeSubtitle {
+  font-size: 1.25rem;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.loadingText {
+  font-size: 1.25rem;
+  color: #4a5568;
+  text-align: center;
+  padding: 2rem;
+} 

@@ -1,0 +1,134 @@
+.property-page {
+  padding: 6rem 2rem 2rem;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+.property-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 20px rgba(139, 69, 19, 0.05);
+  overflow: hidden;
+}
+
+.property-image-placeholder {
+  width: 100%;
+  height: 400px;
+  background: rgba(139, 69, 19, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  opacity: 0.5;
+}
+
+.property-content {
+  padding: 2rem;
+}
+
+.property-title {
+  font-size: 2rem;
+  color: var(--wood-brown);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.property-description {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.property-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #fafafa;
+  border-radius: 12px;
+}
+
+.price-section {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--house-orange);
+}
+
+.price-period {
+  color: #666;
+  font-size: 1rem;
+}
+
+.amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.amenity-tag {
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid rgba(139, 69, 19, 0.1);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: var(--wood-brown);
+}
+
+.booking-button {
+  width: 100%;
+  padding: 1rem;
+  background: var(--house-orange);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.booking-button:hover {
+  background: #d35400;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(211, 84, 0, 0.2);
+}
+
+.booking-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(211, 84, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .property-page {
+    padding: 5rem 1rem 1rem;
+  }
+
+  .property-image-placeholder {
+    height: 300px;
+  }
+
+  .property-content {
+    padding: 1.5rem;
+  }
+
+  .property-title {
+    font-size: 1.75rem;
+  }
+
+  .property-details {
+    padding: 1rem;
+  }
+} 
