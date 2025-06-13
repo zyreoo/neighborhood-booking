@@ -5,6 +5,7 @@ import connectDB from '@/lib/mongodb';
 import User from '@/models/User';
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -39,7 +40,7 @@ export const authOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   pages: {
     signIn: '/auth/signin',
