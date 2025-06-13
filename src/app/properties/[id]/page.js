@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
+import BookingForm from '@/components/BookingForm';
 import './page.css';
 
 console.log('DEBUG: Property page module loaded');
@@ -30,58 +31,37 @@ export default function PropertyPage({ params }) {
   console.log('DEBUG: PropertyPage rendering with params:', params);
   
   const router = useRouter();
-  const { user, loading } = useAuth();
-  const [selectedDates, setSelectedDates] = useState({ start: '', end: '' });
-  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const property = properties[params.id];
 
-  console.log('DEBUG: Current auth state:', { user, loading, isLoading });
+  console.log('DEBUG: Current auth state:', { user, loading });
 
-  useEffect(() => {
-    console.log('DEBUG: PropertyPage useEffect running');
-    console.log('DEBUG: Auth state in effect:', { user, loading });
-
-    const checkAuthAndRedirect = async () => {
-      console.log('DEBUG: Checking auth state');
-      
-      if (loading) {
-        console.log('DEBUG: Auth is still loading...');
-        return;
-      }
-
-      if (!user) {
-        console.log('DEBUG: No user found, preparing redirect');
-        const currentPath = window.location.pathname;
-        console.log('DEBUG: Current path:', currentPath);
-        
-        const existingRedirect = sessionStorage.getItem('redirectAfterAuth');
-        console.log('DEBUG: Existing redirect:', existingRedirect);
-        
-        if (!existingRedirect) {
-          console.log('DEBUG: Setting redirect path:', currentPath);
-          sessionStorage.setItem('redirectAfterAuth', currentPath);
-          console.log('DEBUG: Redirecting to signin');
-          router.push('/auth/signin');
-        } else {
-          console.log('DEBUG: Redirect already set to:', existingRedirect);
-        }
-      } else {
-        console.log('DEBUG: User is authenticated:', user.email);
-      }
-      
-      setIsLoading(false);
-      console.log('DEBUG: Loading state set to false');
-    };
-
-    checkAuthAndRedirect();
-  }, [user, loading, router, params.id]);
+  if (!user) {
+    console.log('DEBUG: No user, showing auth required message');
+    return (
+      <div className="auth-required">
+        <h2>Authentication Required</h2>
+        <p>Please sign in to view this property</p>
+        <button 
+          onClick={() => {
+            sessionStorage.setItem('redirectAfterAuth', window.location.pathname);
+            router.push('/auth/signin');
+          }}
+          className="auth-button"
+        >
+          Sign In
+        </button>
+      </div>
+    );
+  }
 
   if (!property) {
     console.log('DEBUG: Property not found for ID:', params.id);
     return <div>Property not found</div>;
   }
 
-  if (loading || isLoading) {
+  if (loading) {
     console.log('DEBUG: Showing loading state');
     return (
       <div className="loading-screen">
@@ -92,27 +72,6 @@ export default function PropertyPage({ params }) {
       </div>
     );
   }
-
-  if (!user) {
-    console.log('DEBUG: No user, showing auth required message');
-    return (
-      <div className="auth-required">
-        <h2>Authentication Required</h2>
-        <p>Please sign in to view this property</p>
-      </div>
-    );
-  }
-
-  const handleBooking = async () => {
-    console.log('[PropertyPage] Handling booking request:', {
-      propertyId: params.id,
-      userId: user?.uid,
-      dates: selectedDates
-    });
-    
-    // Here you would implement the actual booking logic
-    alert('Booking functionality coming soon!');
-  };
 
   console.log('DEBUG: Rendering property details for:', property.title);
   return (
@@ -150,40 +109,31 @@ export default function PropertyPage({ params }) {
 
           <div className="booking-section">
             <h2>Book Your Stay</h2>
-            <div className="date-picker">
-              <div className="date-input">
-                <label>Check-in</label>
-                <input
-                  type="date"
-                  value={selectedDates.start}
-                  onChange={(e) => setSelectedDates(prev => ({ ...prev, start: e.target.value }))}
-                />
-              </div>
-              <div className="date-input">
-                <label>Check-out</label>
-                <input
-                  type="date"
-                  value={selectedDates.end}
-                  onChange={(e) => setSelectedDates(prev => ({ ...prev, end: e.target.value }))}
-                />
-              </div>
-            </div>
-
-            <div className="price-summary">
-              <span className="price">${property.price}</span>
-              <span className="per-night">per night</span>
-            </div>
-
-            <button 
-              onClick={handleBooking}
-              className="booking-button"
-              disabled={!selectedDates.start || !selectedDates.end}
-            >
-              Book Now
-            </button>
+            <BookingForm 
+              propertyId={params.id}
+              propertyName={property.title}
+            />
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .auth-button {
+          margin-top: 1rem;
+          padding: 0.75rem 1.5rem;
+          background-color: #4299e1;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .auth-button:hover {
+          background-color: #3182ce;
+        }
+      `}</style>
     </div>
   );
 } 
