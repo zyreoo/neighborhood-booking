@@ -1,35 +1,36 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import connectDB from '@/lib/mongodb';
-import User from '@/models/User';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 
 export async function POST(request) {
   try {
-    await connectDB();
     const { name, email, phoneNumber, password } = await request.json();
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'User with this email already exists' },
-        { status: 400 }
-      );
-    }
+    // Create user in Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    // Update user profile with name
+    await updateProfile(user, {
+      displayName: name
+    });
 
-    const user = await User.create({
+    // Store additional user data in Firestore
+    await setDoc(doc(db, 'users', user.uid), {
       name,
       email,
       phoneNumber,
-      password: hashedPassword,
+      role: 'user',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     });
 
     const userWithoutPassword = {
-      _id: user._id,
-      name: user.name,
+      uid: user.uid,
+      name: user.displayName,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phoneNumber
     };
 
     return NextResponse.json(
@@ -39,7 +40,7 @@ export async function POST(request) {
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json(
-      { error: 'Error creating user' },
+      { error: error.message },
       { status: 500 }
     );
   }

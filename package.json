@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.9.1",
+    "@firebase/analytics": "^0.10.16",
+    "@firebase/auth": "^1.10.7",
+    "@firebase/firestore": "^4.7.17",
     "bcryptjs": "^3.0.2",
+    "firebase": "^11.9.1",
     "geist": "^1.4.2",
     "mongodb": "^6.17.0",
     "mongoose": "^8.15.1",

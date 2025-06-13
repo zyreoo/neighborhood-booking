@@ -1,62 +1,90 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-
-const sampleProperties = [
-  {
-    id: 1,
-    title: "Atelier (Lower Haight)",
-    location: "Lower Haight, San Francisco",
-    description: "Modern artist's loft in historic building with abundant natural light and creative atmosphere",
-    image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 2,
-    title: "Casa (Mission)",
-    location: "Mission District, San Francisco",
-    description: "Vibrant home in the heart of the Mission, surrounded by murals and cultural landmarks",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 3,
-    title: "Jiā (Sunset)",
-    location: "Sunset District, San Francisco",
-    description: "Cozy space with ocean views and easy access to Golden Gate Park",
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"
-  }
-];
+import { collection, getDocs, query, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function Home() {
-  return (
-    <div>
-      <header className="header">
-        <h1>Neighborhood Homes</h1>
-        <p>Find your perfect stay in San Francisco's most charming neighborhoods</p>
-      </header>
+  const { data: session, status } = useSession();
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-      <main className="container">
-        <div className="properties-grid">
-          {sampleProperties.map(property => (
-            <div key={property.id} className="property-card">
-              <div style={{ position: 'relative', width: '100%', height: '200px' }}>
-                <Image
-                  src={property.image}
-                  alt={property.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
-              <div className="property-content">
-                <h2 className="property-title">{property.title}</h2>
-                <p className="property-location">{property.location}</p>
-                <p className="property-description">{property.description}</p>
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const propertiesRef = collection(db, 'properties');
+        const q = query(propertiesRef, limit(3));
+        const querySnapshot = await getDocs(q);
+        
+        const fetchedProperties = [];
+        querySnapshot.forEach((doc) => {
+          fetchedProperties.push({ id: doc.id, ...doc.data() });
+        });
+        
+        setProperties(fetchedProperties);
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProperties();
+  }, []);
+
+  if (status === 'loading' || loading) {
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+  }
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+        <h1 className="text-4xl font-bold mb-8">Welcome to Neighborhood Booking</h1>
+        
+        {session ? (
+          <p className="mb-4">Welcome back, {session.user.name || session.user.email}!</p>
+        ) : (
+          <p className="mb-4">Please sign in to book properties</p>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {properties.map((property) => (
+            <div key={property.id} className="border rounded-lg overflow-hidden shadow-lg">
+              {property.images && property.images[0] && (
+                <div className="relative h-48">
+                  <Image
+                    src={property.images[0]}
+                    alt={property.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+              )}
+              <div className="p-4">
+                <h2 className="text-xl font-semibold mb-2">{property.title}</h2>
+                <p className="text-gray-600 mb-2">{property.address?.city}</p>
+                <p className="text-gray-800 mb-4">{property.description}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold">${property.price}/night</span>
+                  <button 
+                    className={`px-4 py-2 rounded ${
+                      session 
+                        ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                    onClick={() => {/* Add booking logic */}}
+                    disabled={!session}
+                  >
+                    {session ? 'Book Now' : 'Sign in to Book'}
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
-        <p className="coming-soon">More Coming Soon...</p>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

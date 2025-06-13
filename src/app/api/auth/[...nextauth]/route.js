@@ -1,8 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
-import connectNeighborhoodDB from '@/lib/mongodb-neighborhood';
-import User from '@/models/neighborhood/User';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -19,16 +18,21 @@ export const authOptions = {
         }
 
         try {
-          await connectNeighborhoodDB();
-          const user = await User.findOne({ email: credentials.email.toLowerCase() });
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            credentials.email,
+            credentials.password
+          );
           
-          if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
+          const user = userCredential.user;
+
+          if (!user) {
             return null;
           }
 
           return {
-            id: user._id.toString(),
-            name: user.name,
+            id: user.uid,
+            name: user.displayName,
             email: user.email,
           };
         } catch (error) {
