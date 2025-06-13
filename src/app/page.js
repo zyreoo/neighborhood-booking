@@ -1,90 +1,161 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { collection, getDocs, query, limit } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+
+const neighborhoods = [
+  {
+    name: 'Sunset',
+    description: 'Peaceful residential area with ocean views',
+    image: '/sunset.jpg',
+    properties: 12
+  },
+  {
+    name: 'Mission',
+    description: 'Vibrant culture and amazing food scene',
+    image: '/mission.jpg',
+    properties: 15
+  },
+  {
+    name: 'Lower Haight',
+    description: 'Historic charm meets modern living',
+    image: '/haight.jpg',
+    properties: 8
+  }
+];
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProperties() {
-      try {
-        const propertiesRef = collection(db, 'properties');
-        const q = query(propertiesRef, limit(3));
-        const querySnapshot = await getDocs(q);
-        
-        const fetchedProperties = [];
-        querySnapshot.forEach((doc) => {
-          fetchedProperties.push({ id: doc.id, ...doc.data() });
-        });
-        
-        setProperties(fetchedProperties);
-      } catch (error) {
-        console.error('Error fetching properties:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
+  if (status === 'loading') {
+    return (
+      <div className="loading-screen">
+        <div className="loading-content">
+          <div className="loading-spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-    fetchProperties();
-  }, []);
+  if (!session) {
+    return (
+      <div className="landing-page">
+        <nav className="navbar">
+          <div className="nav-brand">
+            <span className="nav-logo">🏠</span>
+            <span className="nav-title">Neighborhood</span>
+          </div>
+          <div className="nav-links">
+            <Link href="/about-us" className="nav-link">About Us</Link>
+            <Link href="/contact" className="nav-link">Contact</Link>
+            <Link href="/auth/signin" className="nav-link">Sign In</Link>
+            <Link href="/auth/signup" className="nav-button">Join Us</Link>
+          </div>
+        </nav>
 
-  if (status === 'loading' || loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+        <main className="main-content">
+          <section className="hero-section">
+            <div className="hero-content">
+              <h1 className="hero-title">
+                Find Your Perfect Home in San Francisco
+              </h1>
+              <p className="hero-subtitle">
+                Discover beautiful properties in the city's most charming neighborhoods
+              </p>
+              <Link href="/auth/signup" className="cta-button">
+                Get Started
+              </Link>
+            </div>
+          </section>
+
+          <section className="neighborhoods-section">
+            <h2 className="section-title">Popular Neighborhoods</h2>
+            <div className="neighborhood-grid">
+              {neighborhoods.map((hood, i) => (
+                <div key={i} className="neighborhood-card">
+                  <div className="card-image-container">
+                    <div className="card-image-placeholder">
+                      <span className="placeholder-icon">🏘️</span>
+                    </div>
+                  </div>
+                  <div className="card-content">
+                    <h3 className="card-title">{hood.name}</h3>
+                    <p className="card-description">{hood.description}</p>
+                    <div className="card-footer">
+                      <span className="property-count">{hood.properties} Properties</span>
+                      <Link href="/auth/signup" className="view-link">
+                        View Properties →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    );
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
-        <h1 className="text-4xl font-bold mb-8">Welcome to Neighborhood Booking</h1>
-        
-        {session ? (
-          <p className="mb-4">Welcome back, {session.user.name || session.user.email}!</p>
-        ) : (
-          <p className="mb-4">Please sign in to book properties</p>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((property) => (
-            <div key={property.id} className="border rounded-lg overflow-hidden shadow-lg">
-              {property.images && property.images[0] && (
-                <div className="relative h-48">
-                  <Image
-                    src={property.images[0]}
-                    alt={property.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
-              )}
-              <div className="p-4">
-                <h2 className="text-xl font-semibold mb-2">{property.title}</h2>
-                <p className="text-gray-600 mb-2">{property.address?.city}</p>
-                <p className="text-gray-800 mb-4">{property.description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold">${property.price}/night</span>
-                  <button 
-                    className={`px-4 py-2 rounded ${
-                      session 
-                        ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                    onClick={() => {/* Add booking logic */}}
-                    disabled={!session}
-                  >
-                    {session ? 'Book Now' : 'Sign in to Book'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+    <div className="dashboard-page">
+      <nav className="navbar">
+        <div className="nav-brand">
+          <span className="nav-logo">🏠</span>
+          <span className="nav-title">Neighborhood</span>
         </div>
-      </div>
-    </main>
+        <div className="nav-links">
+          <Link href="/houses" className="nav-link">Find Houses</Link>
+          <Link href="/favorites" className="nav-link">Favorites</Link>
+          <button className="nav-link">Sign Out</button>
+        </div>
+      </nav>
+
+      <main className="main-content">
+        <section className="welcome-section">
+          <h1 className="welcome-title">
+            Welcome Back{session.user?.name ? `, ${session.user.name}` : ''}
+          </h1>
+          <p className="welcome-subtitle">
+            Explore available properties in your favorite neighborhoods
+          </p>
+        </section>
+
+        <section className="neighborhoods-section">
+          <div className="section-header">
+            <h2 className="section-title">Featured Neighborhoods</h2>
+            <Link href="/neighborhoods" className="section-link">
+              View All →
+            </Link>
+          </div>
+          <div className="neighborhood-grid">
+            {neighborhoods.map((hood, i) => (
+              <Link 
+                href={`/neighborhoods/${hood.name.toLowerCase().replace(' ', '-')}`} 
+                key={i} 
+                className="neighborhood-card"
+              >
+                <div className="card-image-container">
+                  <div className="card-image-placeholder">
+                    <span className="placeholder-icon">🏘️</span>
+                  </div>
+                </div>
+                <div className="card-content">
+                  <h3 className="card-title">{hood.name}</h3>
+                  <p className="card-description">{hood.description}</p>
+                  <div className="card-footer">
+                    <span className="property-count">{hood.properties} Properties</span>
+                    <span className="view-link">Explore →</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }

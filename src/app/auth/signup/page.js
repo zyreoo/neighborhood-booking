@@ -1,155 +1,154 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import AuthLayout from '@/components/AuthLayout';
-import { useAuth } from '@/lib/auth';
+import '../../../styles/main.css';
+import '../../../styles/auth.css';
 
 export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { signUp } = useAuth();
-
-  const validatePhoneNumber = (phone) => {
-    const phoneRegex = /^\+?1?\d{10}$/;
-    return phoneRegex.test(phone.replace(/\D/g, ''));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (!validatePhoneNumber(phoneNumber)) {
-      setError('Please enter a valid 10-digit phone number');
-      return;
-    }
-
     setLoading(true);
 
     try {
-      await signUp(email, password, name, phoneNumber);
-      router.push('/');
-    } catch (err) {
-      setError('Failed to create an account. Please try again.');
-    } finally {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.error === 'This email is already registered') {
+          setError('This email is already registered. Would you like to sign in instead?');
+        } else {
+          setError(data.error || 'Something went wrong during signup');
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Sign in the user after successful registration
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result.error) {
+        setError('Error signing in after registration');
+        setLoading(false);
+      } else {
+        router.push('/');
+      }
+    } catch (error) {
+      setError('An unexpected error occurred. Please try again.');
       setLoading(false);
     }
   };
 
   return (
-    <AuthLayout title="Create Account">
-      <form onSubmit={handleSubmit}>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h1>Create Account</h1>
+          <p>Join Neighborhood Homes today</p>
+        </div>
+
         {error && (
           <div className="auth-error">
-            <p className="auth-error-text">{error}</p>
+            {error}
+            {error.includes('already registered') && (
+              <p className="auth-error-action">
+                <Link href="/auth/signin" className="auth-link">
+                  Click here to sign in
+                </Link>
+              </p>
+            )}
           </div>
         )}
 
-        <div className="form-group">
-          <label htmlFor="name" className="form-label">
-            Full Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="form-input"
-            placeholder="Enter your full name"
-            required
-          />
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-input-group">
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="auth-input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="auth-input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+              minLength={6}
+            />
+            <small className="auth-input-help">Password must be at least 6 characters long</small>
+          </div>
+
+          <button 
+            type="submit" 
+            className="auth-submit"
+            disabled={loading}
+          >
+            {loading ? 'Creating Account...' : 'Sign Up'}
+          </button>
+        </form>
+
+        <div className="auth-divider">
+          <span>or continue with</span>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="form-input"
-            placeholder="Enter your email"
-            required
-          />
+        <div className="auth-social-buttons">
+          <button
+            onClick={() => signIn('google')}
+            className="auth-social-button"
+            disabled={loading}
+          >
+            <img src="/google-icon.svg" alt="Google" width="20" height="20" />
+            Sign up with Google
+          </button>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="phone" className="form-label">
-            Phone Number
-          </label>
-          <input
-            id="phone"
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            className="form-input"
-            placeholder="Enter your phone number"
-            required
-          />
-          <small className="text-gray-500">Format: 1234567890</small>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="form-input"
-            placeholder="Create a password"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="confirm-password" className="form-label">
-            Confirm Password
-          </label>
-          <input
-            id="confirm-password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="form-input"
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="auth-button"
-          disabled={loading}
-        >
-          {loading ? 'Creating account...' : 'Create Account'}
-        </button>
-
-        <div className="auth-link-container">
-          <p className="auth-text">
+        <div className="auth-footer">
+          <p>
             Already have an account?{' '}
-            <Link href="/auth/signin" className="auth-link">
-              Sign in
-            </Link>
+            <Link href="/auth/signin">Sign in</Link>
           </p>
         </div>
-      </form>
-    </AuthLayout>
+      </div>
+    </div>
   );
 } 

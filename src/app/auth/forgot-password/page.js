@@ -1,113 +1,75 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import AuthLayout from '@/components/AuthLayout';
-import { useAuth } from '@/lib/auth';
+import '../../../styles/main.css';
+import '../../../styles/auth.css';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
-  const [phoneLastFour, setPhoneLastFour] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const { verifyPhoneAndResetPassword } = useAuth();
-
-  const validatePhoneLastFour = (digits) => {
-    return /^\d{4}$/.test(digits);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    if (!validatePhoneLastFour(phoneLastFour)) {
-      setError('Please enter the last 4 digits of your phone number');
-      return;
-    }
-
-    setLoading(true);
-
     try {
-      await verifyPhoneAndResetPassword(phoneLastFour, email);
-      setSuccess('Password reset email sent. Please check your inbox.');
-      setTimeout(() => {
-        router.push('/auth/signin');
-      }, 3000);
-    } catch (err) {
-      setError('Failed to verify phone number or send reset email. Please try again.');
-    } finally {
-      setLoading(false);
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+
+      setSuccess('Password reset instructions have been sent to your email');
+      setEmail('');
+    } catch (error) {
+      setError(error.message);
     }
   };
 
   return (
-    <AuthLayout title="Reset Password">
-      <form onSubmit={handleSubmit}>
-        {error && (
-          <div className="auth-error">
-            <p className="auth-error-text">{error}</p>
-          </div>
-        )}
-
-        {success && (
-          <div className="auth-success">
-            <p className="auth-success-text">{success}</p>
-          </div>
-        )}
-
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="form-input"
-            placeholder="Enter your email"
-            required
-          />
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h1>Reset Password</h1>
+          <p>Enter your email to receive reset instructions</p>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="phone-last-four" className="form-label">
-            Last 4 digits of phone number
-          </label>
-          <input
-            id="phone-last-four"
-            type="text"
-            value={phoneLastFour}
-            onChange={(e) => setPhoneLastFour(e.target.value)}
-            className="form-input"
-            placeholder="Enter last 4 digits"
-            maxLength={4}
-            pattern="\d{4}"
-            required
-          />
-        </div>
+        {error && <div className="auth-error">{error}</div>}
+        {success && <div className="auth-success">{success}</div>}
 
-        <button
-          type="submit"
-          className="auth-button"
-          disabled={loading}
-        >
-          {loading ? 'Verifying...' : 'Reset Password'}
-        </button>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="auth-link-container">
-          <p className="auth-text">
+          <button type="submit" className="auth-submit">
+            Send Reset Instructions
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <p>
             Remember your password?{' '}
-            <Link href="/auth/signin" className="auth-link">
-              Sign in
-            </Link>
+            <Link href="/auth/signin">Sign in</Link>
           </p>
         </div>
-      </form>
-    </AuthLayout>
+      </div>
+    </div>
   );
 } 

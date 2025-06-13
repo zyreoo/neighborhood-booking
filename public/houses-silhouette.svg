@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="100" viewBox="0 0 1200 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#8B4513" fill-opacity="0.2">
+    <!-- House 1 -->
+    <path d="M0,100 L0,60 L25,40 L50,60 L50,100 Z" />
+    <!-- House 2 -->
+    <path d="M60,100 L60,50 L85,30 L110,50 L110,100 Z" />
+    <!-- House 3 with chimney -->
+    <path d="M120,100 L120,45 L145,25 L170,45 L170,100 Z M130,35 L130,20 L140,20 L140,40 Z" />
+    <!-- House 4 -->
+    <path d="M180,100 L180,55 L205,35 L230,55 L230,100 Z" />
+    <!-- Victorian House -->
+    <path d="M240,100 L240,60 L265,30 L290,60 L290,100 Z M250,70 L250,80 L260,80 L260,70 Z M270,70 L270,80 L280,80 L280,70 Z" />
+    
+    <!-- Repeat pattern -->
+    <use href="#houses" x="300" />
+    <use href="#houses" x="600" />
+    <use href="#houses" x="900" />
+  </g>
+</svg> 
