@@ -1,13 +1,14 @@
 import { Inter } from 'next/font/google';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
+import Providers from '@/components/Providers';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Blue - Find Your Perfect Stay',
-  description: 'Discover and book the perfect accommodation for your next trip.',
+  title: 'Neighborhood Booking - Find Your Local Stay',
+  description: 'Discover and book the perfect accommodation in your neighborhood.',
 };
 
 export default async function RootLayout({ children }) {
@@ -16,7 +17,9 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

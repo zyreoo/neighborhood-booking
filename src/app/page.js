@@ -1,140 +1,62 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import styles from './page.module.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Link from 'next/link';
 import Image from 'next/image';
-import { HomePageSkeleton } from '@/components/SkeletonLoader';
-import dynamic from 'next/dynamic';
 
-// Dynamically import heavy components
-const LocationSection = dynamic(() => import('@/components/LocationSection'), {
-  loading: () => <HomePageSkeleton />,
-  ssr: true
-});
+const sampleProperties = [
+  {
+    id: 1,
+    title: "Atelier (Lower Haight)",
+    location: "Lower Haight, San Francisco",
+    description: "Modern artist's loft in historic building with abundant natural light and creative atmosphere",
+    image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 2,
+    title: "Casa (Mission)",
+    location: "Mission District, San Francisco",
+    description: "Vibrant home in the heart of the Mission, surrounded by murals and cultural landmarks",
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 3,
+    title: "Jiā (Sunset)",
+    location: "Sunset District, San Francisco",
+    description: "Cozy space with ocean views and easy access to Golden Gate Park",
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"
+  }
+];
 
 export default function Home() {
-  const [properties, setProperties] = useState([]);
-  const [topLocations, setTopLocations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    
-    fetchData(controller.signal);
-    
-    return () => controller.abort();
-  }, []);
-
-  const fetchData = async (signal) => {
-    try {
-      const [propertiesResponse, bookingsResponse] = await Promise.all([
-        fetch('/api/properties', { 
-          signal,
-          headers: {
-            'Cache-Control': 'public, max-age=31536000, immutable',
-          }
-        }),
-        fetch('/api/bookings', { 
-          signal,
-          headers: {
-            'Cache-Control': 'public, max-age=31536000, immutable',
-          }
-        })
-      ]);
-
-      if (!propertiesResponse.ok || !bookingsResponse.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
-      const propertiesData = await propertiesResponse.json();
-      const bookingsData = await bookingsResponse.json();
-
-      setProperties(propertiesData);
-      setTopLocations(bookingsData);
-    } catch (err) {
-      if (err.name === 'AbortError') return;
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatLocationUrl = (location) => {
-    return encodeURIComponent(location.toLowerCase().replace(/\s+/g, '-'));
-  };
-
-  const groupedProperties = properties.reduce((acc, property) => {
-    if (!acc[property.location]) {
-      acc[property.location] = [];
-    }
-    acc[property.location].push(property);
-    return acc;
-  }, {});
-
-  if (loading) return (
-    <div>
-      <Header />
-      <HomePageSkeleton />
-      <Footer />
-    </div>
-  );
-  
-  if (error) return <div className={styles.error}>{error}</div>;
-
   return (
     <div>
-      <Header />
-      <main className={styles.main}>
-        <h1 className={styles.mainTitle}>Find Your Perfect Stay</h1>
-        <Suspense fallback={<HomePageSkeleton />}>
-          {topLocations.map((locationData) => {
-            const locationProperties = groupedProperties[locationData.location] || [];
-            return (
-              <section key={locationData.location} className={styles.locationSection}>
-                <Link href={`/${formatLocationUrl(locationData.location)}`} className={styles.locationLink}>
-                  <h2 className={styles.locationTitle}>
-                    Stay in {locationData.location} 
-                  </h2>
-                </Link>
-                <div className={styles.cardsContainer}>
-                  <div className={styles.cardsScroll}>
-                    {locationProperties.map((property) => (
-                      <Link 
-                        key={property._id} 
-                        href={`/${formatLocationUrl(locationData.location)}/${property._id}`}
-                        className={styles.card}
-                      >
-                        <div className={styles.imageContainer}>
-                          <Image 
-                            src={property.imageUrl} 
-                            alt={property.title}
-                            className={styles.image}
-                            width={300}
-                            height={200}
-                            priority={false}
-                            loading="lazy"
-                            quality={75}
-                          />
-                          <div className={styles.price}>${property.price}/night</div>
-                        </div>
-                        <div className={styles.content}>
-                          <h3>{property.title}</h3>
-                          <p className={styles.description}>{property.description}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            );
-          })}
-        </Suspense>
+      <header className="header">
+        <h1>Neighborhood Homes</h1>
+        <p>Find your perfect stay in San Francisco's most charming neighborhoods</p>
+      </header>
+
+      <main className="container">
+        <div className="properties-grid">
+          {sampleProperties.map(property => (
+            <div key={property.id} className="property-card">
+              <div style={{ position: 'relative', width: '100%', height: '200px' }}>
+                <Image
+                  src={property.image}
+                  alt={property.title}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+              <div className="property-content">
+                <h2 className="property-title">{property.title}</h2>
+                <p className="property-location">{property.location}</p>
+                <p className="property-description">{property.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="coming-soon">More Coming Soon...</p>
       </main>
-      <Footer />
     </div>
   );
 }

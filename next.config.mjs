@@ -5,10 +5,12 @@ const nextConfig = {
   
   // Enable image optimization
   images: {
-    domains: [
-      'images.unsplash.com',
-      'plus.unsplash.com',
-      'source.unsplash.com'
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24, // 24 hours

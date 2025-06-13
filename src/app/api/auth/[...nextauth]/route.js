@@ -1,8 +1,8 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import connectDB from '@/lib/mongodb';
-import User from '@/models/User';
+import connectNeighborhoodDB from '@/lib/mongodb-neighborhood';
+import User from '@/models/neighborhood/User';
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -19,7 +19,7 @@ export const authOptions = {
         }
 
         try {
-          await connectDB();
+          await connectNeighborhoodDB();
           const user = await User.findOne({ email: credentials.email.toLowerCase() });
           
           if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
