@@ -36,7 +36,12 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [authError, setAuthError] = useState(null);
+    const [isAdminUser, setIsAdminUser] = useState(false);
     const router = useRouter();
+
+    const isAdmin = useCallback(() => {
+        return user?.email === 'simone.marton89@gmail.com';
+    }, [user]);
 
     const handleAuthStateChange = useCallback(async (user) => {
         console.log('🔐 [Auth] Auth state changed:', user ? 'User present' : 'No user');
@@ -55,9 +60,13 @@ export const AuthProvider = ({ children }) => {
                 displayName: user.displayName,
             }));
             
+            // Set admin status
+            setIsAdminUser(user.email === 'simone.marton89@gmail.com');
+            
             console.log('🔐 [Auth] User state updated and stored');
         } else {
             setUser(null);
+            setIsAdminUser(false);
             sessionStorage.removeItem('authUser');
             console.log('🔐 [Auth] User state cleared');
         }
@@ -206,10 +215,12 @@ export const AuthProvider = ({ children }) => {
         signUp,
         signIn,
         signInWithGoogle,
-        signOut
+        signOut,
+        isAdmin,
+        isAdminUser
     };
 
-    console.log('🔐 [Auth] Current state:', { user, loading, authError });
+    console.log('🔐 [Auth] Current state:', { user, loading, authError, isAdminUser });
 
     return (
         <AuthContext.Provider value={value}>

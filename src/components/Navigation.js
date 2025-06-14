@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth';
 
 export default function Navigation() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -41,6 +41,11 @@ export default function Navigation() {
               {isDropdownOpen && (
                 <div className="dropdown-menu">
                   <div className="user-email">{user.email}</div>
+                  {isAdmin() && (
+                    <Link href="/admin" className="dropdown-item">
+                      Admin Dashboard
+                    </Link>
+                  )}
                   <Link href="/profile" className="dropdown-item">
                     Profile
                   </Link>
