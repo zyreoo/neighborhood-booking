@@ -13,36 +13,21 @@ const neighborhoods = [
     name: 'Sunset District',
     description: 'Ocean views & laid-back vibes 🌊',
     password: 'oceanview',
-    image: '/neighborhoods/sunset.jpg',
-    stats: {
-      properties: 45,
-      rating: 4.8,
-      price: '$$$'
-    }
+    image: '/neighborhoods/sunset.jpg'
   },
   {
     id: 'mission',
     name: 'Mission District',
     description: 'Food & culture paradise 🌮',
     password: 'foodscene',
-    image: '/neighborhoods/mission.jpg',
-    stats: {
-      properties: 60,
-      rating: 4.9,
-      price: '$$'
-    }
+    image: '/neighborhoods/mission.jpg'
   },
   {
     id: 'lower-haight',
     name: 'Lower Haight',
     description: 'Historic charm meets modern life 🎨',
     password: 'historic',
-    image: '/neighborhoods/lower-haight.jpg',
-    stats: {
-      properties: 35,
-      rating: 4.7,
-      price: '$$$'
-    }
+    image: '/neighborhoods/lower-haight.jpg' 
   }
 ];
 
@@ -136,21 +121,6 @@ export default function Home() {
                         <span>🏘️</span>
                       </div>
                     )}
-                    {hoveredCard === hood.id && (
-                      <div className="image-overlay">
-                        <div className="overlay-content">
-                          <div className="stat-item">
-                            <span>🏠</span> {hood.stats.properties} Properties
-                          </div>
-                          <div className="stat-item">
-                            <span>⭐</span> {hood.stats.rating} Rating
-                          </div>
-                          <div className="stat-item">
-                            <span>💰</span> {hood.stats.price}
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </div>
                   <div className="property-content">
                     <h3 className="property-title">{hood.name}</h3>
@@ -200,21 +170,6 @@ export default function Home() {
                   ) : (
                     <div className="property-image-placeholder">
                       <span>🏘️</span>
-                    </div>
-                  )}
-                  {hoveredCard === hood.id && (
-                    <div className="image-overlay">
-                      <div className="overlay-content">
-                        <div className="stat-item">
-                          <span>🏠</span> {hood.stats.properties} Properties
-                        </div>
-                        <div className="stat-item">
-                          <span>⭐</span> {hood.stats.rating} Rating
-                        </div>
-                        <div className="stat-item">
-                          <span>💰</span> {hood.stats.price}
-                        </div>
-                      </div>
                     </div>
                   )}
                 </div>

@@ -35,29 +35,6 @@ export default function WelcomeHeader() {
         <p className="welcome-subtitle">
           Ready to explore more beautiful homes in San Francisco?
         </p>
-        <div className="stats">
-          <div className="stat-item">
-            <span className="stat-icon">🏠</span>
-            <div className="stat-content">
-              <div className="stat-value">150+</div>
-              <div className="stat-label">Properties</div>
-            </div>
-          </div>
-          <div className="stat-item">
-            <span className="stat-icon">📍</span>
-            <div className="stat-content">
-              <div className="stat-value">3</div>
-              <div className="stat-label">Neighborhoods</div>
-            </div>
-          </div>
-          <div className="stat-item">
-            <span className="stat-icon">⭐</span>
-            <div className="stat-content">
-              <div className="stat-value">4.8</div>
-              <div className="stat-label">Rating</div>
-            </div>
-          </div>
-        </div>
       </div>
       
       <style jsx>{`

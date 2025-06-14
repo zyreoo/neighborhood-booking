@@ -220,6 +220,8 @@ body {
 /* Password Input */
 .access-form {
   margin-top: 1.5rem;
+  position: relative;
+  z-index: 10;
 }
 
 .input-group {
@@ -232,6 +234,8 @@ body {
   margin-bottom: 1rem;
   border: 2px solid transparent;
   transition: var(--transition);
+  position: relative;
+  z-index: 10;
 }
 
 .input-group:focus-within {
@@ -243,6 +247,8 @@ body {
   font-size: 1.25rem;
   color: var(--text);
   opacity: 0.5;
+  position: relative;
+  z-index: 10;
 }
 
 .input {
@@ -254,6 +260,8 @@ body {
   font-size: 1rem;
   color: var(--text);
   padding: 0.5rem 0;
+  position: relative;
+  z-index: 10;
 }
 
 .input::placeholder {
@@ -268,6 +276,8 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+  z-index: 10;
 }
 
 /* Decorative Elements */

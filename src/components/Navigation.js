@@ -39,6 +39,12 @@ export default function Navigation() {
             <span className="link-icon">🗺️</span>
             <span className="link-text">Neighborhoods</span>
           </Link>
+          {user && (
+            <Link href="/whosinthehouse" className="nav-link">
+              <span className="link-icon">👥</span>
+              <span className="link-text">Who's In</span>
+            </Link>
+          )}
           {user ? (
             <div className="profile-section">
               <button 
