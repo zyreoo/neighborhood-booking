@@ -216,13 +216,6 @@ export default function BookingForm({ propertyId, propertyName }) {
             </div>
           )}
         </div>
-
-        {checkIn && checkOut && (
-          <div className="stay-duration">
-            <p>Stay Duration: {Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24))} nights</p>
-          </div>
-        )}
-
         <button 
           type="submit" 
           className="submit-button"

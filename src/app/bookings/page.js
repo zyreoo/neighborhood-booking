@@ -159,28 +159,6 @@ export default function BookingsPage() {
                   <p>{formatDate(booking.checkOut)}</p>
                 </div>
               </div>
-
-              <div className="stay-duration">
-                <p>14 nights</p>
-              </div>
-
-              {booking.status === 'confirmed' && (
-                <button 
-                  className="cancel-button"
-                  onClick={async () => {
-                    try {
-                      await bookingModel.cancelBooking(booking.id);
-                      // Refresh bookings
-                      const updatedBookings = await bookingModel.getUserBookings(user.uid);
-                      setBookings(updatedBookings);
-                    } catch (error) {
-                      setError('Failed to cancel booking. Please try again.');
-                    }
-                  }}
-                >
-                  Cancel Booking
-                </button>
-              )}
             </div>
           ))}
         </div>

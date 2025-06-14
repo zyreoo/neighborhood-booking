@@ -15,7 +15,7 @@ const properties = {
     image: '/sunset-house.jpg'
   },
   'mission': {
-    id: 'mission-modern-loft',
+    id: 'mission',
     title: 'Mission Modern Loft',
     description: 'Contemporary loft in the heart of the Mission district',
     price: '275',
@@ -23,11 +23,11 @@ const properties = {
     image: '/mission-loft.jpg'
   },
   'lower-haight': {
-    id: 'haight-victorian',
-    title: 'Historic Victorian',
-    description: 'Charming Victorian home with modern amenities',
-    price: '325',
-    amenities: ['Period Details', 'Modern Updates', '3 Bedrooms', '2 Bathrooms'],
+    id: 'lowerhaight',
+    title: 'Lower Haight Victorian',
+    description: 'Classic San Francisco Victorian in Lower Haight',
+    price: '300',
+    amenities: ['Period Details', 'Bay Windows', '3 Bedrooms', '1.5 Bathrooms'],
     image: '/haight-victorian.jpg'
   }
 };
@@ -85,6 +85,99 @@ export default function NeighborhoodPage({ params }) {
           </button>
         </div>
       </div>
+
+      <style jsx>{`
+        .property-page {
+          padding: 2rem;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .property-container {
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+        }
+
+        .property-image-placeholder {
+          background: #f0f0f0;
+          height: 400px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .placeholder-icon {
+          font-size: 48px;
+        }
+
+        .property-content {
+          padding: 2rem;
+        }
+
+        .property-title {
+          font-size: 2rem;
+          margin: 0 0 1rem;
+          color: #2d3748;
+        }
+
+        .property-description {
+          color: #4a5568;
+          margin-bottom: 2rem;
+        }
+
+        .property-details {
+          margin-bottom: 2rem;
+        }
+
+        .price-section {
+          margin-bottom: 1rem;
+        }
+
+        .price {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #2d3748;
+        }
+
+        .price-period {
+          color: #718096;
+          margin-left: 0.5rem;
+        }
+
+        .amenities {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .amenity-tag {
+          background: #edf2f7;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-size: 0.875rem;
+          color: #4a5568;
+        }
+
+        .booking-button {
+          width: 100%;
+          padding: 1rem;
+          background-color: #4299e1;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .booking-button:hover {
+          background-color: #3182ce;
+        }
+      `}</style>
     </div>
   );
 } 

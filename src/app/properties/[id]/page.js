@@ -24,7 +24,36 @@ const properties = {
       'Parking for 2 cars'
     ]
   },
-  // ... other properties
+  'mission': {
+    title: 'Mission Modern Loft',
+    description: 'Contemporary loft in the heart of the Mission district',
+    price: '275',
+    amenities: ['High Ceilings', 'Modern Kitchen', '2 Bedrooms', '2 Bathrooms'],
+    image: '/mission-loft.jpg',
+    details: [
+      'Open concept living space',
+      'Industrial-style design',
+      'Gourmet kitchen with island',
+      'Walk-in closets',
+      'Smart home features',
+      'Close to restaurants and bars'
+    ]
+  },
+  'lowerhaight': {
+    title: 'Lower Haight Victorian',
+    description: 'Classic San Francisco Victorian in Lower Haight',
+    price: '300',
+    amenities: ['Period Details', 'Bay Windows', '3 Bedrooms', '1.5 Bathrooms'],
+    image: '/haight-victorian.jpg',
+    details: [
+      'Original hardwood floors',
+      'Ornate Victorian details',
+      'Updated kitchen',
+      'Private garden',
+      'High ceilings',
+      'Close to public transit'
+    ]
+  }
 };
 
 export default function PropertyPage({ params }) {
