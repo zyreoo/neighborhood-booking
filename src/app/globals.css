@@ -1,11 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
+  --primary-gradient: linear-gradient(135deg, #6366f1, #4f46e5);
+  --text-primary: #333;
+  --text-secondary: #666;
+  --background-dark: #0a0a0a;
+  --background-light: #ffffff;
   --primary-color: #FF5A5F;
   --secondary-color: #00A699;
   --text-color: #484848;
   --light-text: #767676;
-  --background: #FFFFFF;
   --light-background: #F7F7F7;
   --border-color: #DDDDDD;
   --shadow: 0 2px 4px rgba(0,0,0,0.08);
@@ -18,11 +22,84 @@
   padding: 0;
 }
 
+html,
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: var(--text-color);
-  line-height: 1.5;
-  background: var(--background);
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--background-dark);
+  color: var(--background-light);
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+.landing-page {
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('/mansion-bg.jpg') center/cover no-repeat;
+}
+
+.hero-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #fff, #ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+}
+
+.cta-button {
+  display: inline-block;
+  background: var(--primary-gradient);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 0.2s;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+  padding: 2rem;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Navbar Styles */
@@ -31,7 +108,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: var(--background);
+  background: var(--background-light);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -85,61 +162,10 @@ body {
   background-color: #ff4448;
 }
 
-/* Hero Section */
-.hero-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/hero-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  padding: 2rem;
-}
-
-.hero-content {
-  max-width: 800px;
-}
-
-.hero-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.hero-subtitle {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
-}
-
-.cta-button {
-  background: var(--primary-color);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.125rem;
-  transition: background-color 0.2s;
-}
-
-.cta-button:hover {
-  background-color: #ff4448;
-}
-
 /* Neighborhoods Section */
 .neighborhoods-section {
   padding: 4rem 2rem;
   background: var(--light-background);
-}
-
-.section-title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
 }
 
 .neighborhood-grid {
@@ -151,7 +177,7 @@ body {
 }
 
 .neighborhood-card {
-  background: var(--background);
+  background: var(--background-light);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow);
@@ -235,13 +261,8 @@ body {
 }
 
 /* Dashboard Page */
-.dashboard-page {
-  min-height: 100vh;
-  background: var(--light-background);
-}
-
 .welcome-section {
-  background: var(--background);
+  background: var(--background-light);
   padding: 3rem 2rem;
   text-align: center;
   border-bottom: 1px solid var(--border-color);

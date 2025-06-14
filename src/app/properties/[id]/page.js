@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import BookingForm from '@/components/BookingForm';
+import { bookingModel } from '@/lib/firestore/bookingModel';
 import './page.css';
 
 console.log('DEBUG: Property page module loaded');
@@ -61,8 +62,25 @@ export default function PropertyPage({ params }) {
   
   const router = useRouter();
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [hasExistingBooking, setHasExistingBooking] = useState(false);
   const property = properties[params.id];
+
+  useEffect(() => {
+    const checkExistingBooking = async () => {
+      if (user) {
+        try {
+          const bookings = await bookingModel.getUserActiveBookings(user.uid);
+          setHasExistingBooking(bookings.length > 0);
+        } catch (error) {
+          console.error('Error checking bookings:', error);
+        }
+      }
+      setLoading(false);
+    };
+
+    checkExistingBooking();
+  }, [user]);
 
   console.log('DEBUG: Current auth state:', { user, loading });
 
@@ -138,15 +156,52 @@ export default function PropertyPage({ params }) {
 
           <div className="booking-section">
             <h2>Book Your Stay</h2>
-            <BookingForm 
-              propertyId={params.id}
-              propertyName={property.title}
-            />
+            {hasExistingBooking ? (
+              <div className="contact-message">
+                <p>You already have an active booking.</p>
+                <p>Please contact Thomas to make any changes to your reservation:</p>
+                <div className="contact-info">
+                  <p>📧 Email: thomas@example.com</p>
+                  <p>📞 Phone: (555) 123-4567</p>
+                </div>
+              </div>
+            ) : (
+              <BookingForm 
+                propertyId={params.id}
+                propertyName={property.title}
+              />
+            )}
           </div>
         </div>
       </div>
 
       <style jsx>{`
+        .contact-message {
+          background-color: #fff3f3;
+          border: 1px solid #ff5a5f;
+          border-radius: 8px;
+          padding: 1.5rem;
+          margin-top: 1rem;
+          text-align: center;
+        }
+
+        .contact-message p {
+          margin: 0.5rem 0;
+          color: #484848;
+        }
+
+        .contact-info {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid #ffcdd2;
+        }
+
+        .contact-info p {
+          margin: 0.5rem 0;
+          color: #484848;
+          font-weight: 500;
+        }
+
         .auth-button {
           margin-top: 1rem;
           padding: 0.75rem 1.5rem;

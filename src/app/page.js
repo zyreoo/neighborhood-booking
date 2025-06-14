@@ -1,30 +1,63 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 import WelcomeHeader from '@/components/WelcomeHeader';
 
 const neighborhoods = [
   {
+    id: 'sunset',
     name: 'Sunset',
     description: 'Peaceful residential area with ocean views',
-    image: '/sunset.jpg',
+    password: 'oceanview',
   },
   {
+    id: 'mission',
     name: 'Mission',
     description: 'Vibrant culture and amazing food scene',
-    image: '/mission.jpg',
+    password: 'foodscene',
   },
   {
+    id: 'lower-haight',
     name: 'Lower Haight',
     description: 'Historic charm meets modern living',
-    image: '/haight.jpg',
+    password: 'historic',
   }
 ];
 
 export default function Home() {
   const { user } = useAuth();
+  const router = useRouter();
+  const [passwords, setPasswords] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const handlePasswordChange = (id, value) => {
+    setPasswords(prev => ({
+      ...prev,
+      [id]: value
+    }));
+    // Clear error when typing
+    if (errors[id]) {
+      setErrors(prev => ({
+        ...prev,
+        [id]: ''
+      }));
+    }
+  };
+
+  const handleAccess = (neighborhood) => {
+    const enteredPassword = passwords[neighborhood.id] || '';
+    if (enteredPassword === neighborhood.password) {
+      router.push(`/neighborhoods/${neighborhood.id}`);
+    } else {
+      setErrors(prev => ({
+        ...prev,
+        [neighborhood.id]: 'Incorrect password'
+      }));
+    }
+  };
 
   if (!user) {
     return (
@@ -47,8 +80,8 @@ export default function Home() {
           <section className="neighborhoods-section">
             <h2 className="section-title">Popular Neighborhoods</h2>
             <div className="neighborhood-grid">
-              {neighborhoods.map((hood, i) => (
-                <div key={i} className="neighborhood-card">
+              {neighborhoods.map((hood) => (
+                <div key={hood.id} className="neighborhood-card">
                   <div className="card-image-container">
                     <div className="card-image-placeholder">
                       <span className="placeholder-icon">🏘️</span>
@@ -58,7 +91,6 @@ export default function Home() {
                     <h3 className="card-title">{hood.name}</h3>
                     <p className="card-description">{hood.description}</p>
                     <div className="card-footer">
-                      <span className="property-count">{hood.properties} Properties</span>
                       <Link href="/auth/signup" className="view-link">
                         View Properties →
                       </Link>
@@ -79,16 +111,10 @@ export default function Home() {
         <WelcomeHeader />
         
         <section className="neighborhoods-section">
-          <div className="section-header">
-            <h2 className="section-title">Featured Neighborhoods</h2>
-          </div>
+          <h2 className="section-title">Featured Neighborhoods</h2>
           <div className="neighborhood-grid">
-            {neighborhoods.map((hood, i) => (
-              <Link 
-                href={`/neighborhoods/${hood.name.toLowerCase().replace(' ', '-')}`} 
-                key={i} 
-                className="neighborhood-card"
-              >
+            {neighborhoods.map((hood) => (
+              <div key={hood.id} className="neighborhood-card">
                 <div className="card-image-container">
                   <div className="card-image-placeholder">
                     <span className="placeholder-icon">🏘️</span>
@@ -97,16 +123,70 @@ export default function Home() {
                 <div className="card-content">
                   <h3 className="card-title">{hood.name}</h3>
                   <p className="card-description">{hood.description}</p>
-                  <div className="card-footer">
-                    <span className="property-count">{hood.properties} Properties</span>
-                    <span className="view-link">Explore →</span>
+                  <div className="password-section">
+                    <div className="password-input-container">
+                      <span className="lock-icon">🔒</span>
+                      <input
+                        type="password"
+                        placeholder="Enter Password"
+                        value={passwords[hood.id] || ''}
+                        onChange={(e) => handlePasswordChange(hood.id, e.target.value)}
+                        className="password-input"
+                      />
+                    </div>
+                    <button 
+                      onClick={() => handleAccess(hood)}
+                      className="access-button"
+                    >
+                      Access →
+                    </button>
                   </div>
+                  {errors[hood.id] && (
+                    <p className="error-message">{errors[hood.id]}</p>
+                  )}
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </section>
       </main>
+
+      <style jsx>{`
+        .password-section {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-top: 1rem;
+        }
+        .password-input-container {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex: 1;
+        }
+        .lock-icon {
+          font-size: 1.2rem;
+        }
+        .password-input {
+          flex: 1;
+          padding: 0.5rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 0.9rem;
+        }
+        .access-button {
+          background: none;
+          border: none;
+          color: #FF5A5F;
+          cursor: pointer;
+          font-weight: 500;
+        }
+        .error-message {
+          color: #FF5A5F;
+          font-size: 0.8rem;
+          margin-top: 0.5rem;
+        }
+      `}</style>
     </div>
   );
 }
