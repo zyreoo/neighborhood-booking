@@ -13,7 +13,6 @@ const properties = {
   'sunset-beach-house': {
     title: 'Sunset Beach House',
     description: 'Beautiful beachfront property with stunning ocean views',
-    price: '350',
     amenities: ['Ocean View', 'Private Deck', '3 Bedrooms', '2 Bathrooms'],
     image: '/sunset-house.jpg',
     details: [
@@ -28,7 +27,6 @@ const properties = {
   'mission': {
     title: 'Mission Modern Loft',
     description: 'Contemporary loft in the heart of the Mission district',
-    price: '275',
     amenities: ['High Ceilings', 'Modern Kitchen', '2 Bedrooms', '2 Bathrooms'],
     image: '/mission-loft.jpg',
     details: [
@@ -43,7 +41,6 @@ const properties = {
   'lowerhaight': {
     title: 'Lower Haight Victorian',
     description: 'Classic San Francisco Victorian in Lower Haight',
-    price: '300',
     amenities: ['Period Details', 'Bay Windows', '3 Bedrooms', '1.5 Bathrooms'],
     image: '/haight-victorian.jpg',
     details: [

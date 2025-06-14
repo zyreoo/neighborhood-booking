@@ -5,25 +5,44 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import WelcomeHeader from '@/components/WelcomeHeader';
+import Image from 'next/image';
 
 const neighborhoods = [
   {
     id: 'sunset',
-    name: 'Sunset',
-    description: 'Peaceful residential area with ocean views',
+    name: 'Sunset District',
+    description: 'Ocean views & laid-back vibes 🌊',
     password: 'oceanview',
+    image: '/neighborhoods/sunset.jpg',
+    stats: {
+      properties: 45,
+      rating: 4.8,
+      price: '$$$'
+    }
   },
   {
     id: 'mission',
-    name: 'Mission',
-    description: 'Vibrant culture and amazing food scene',
+    name: 'Mission District',
+    description: 'Food & culture paradise 🌮',
     password: 'foodscene',
+    image: '/neighborhoods/mission.jpg',
+    stats: {
+      properties: 60,
+      rating: 4.9,
+      price: '$$'
+    }
   },
   {
     id: 'lower-haight',
     name: 'Lower Haight',
-    description: 'Historic charm meets modern living',
+    description: 'Historic charm meets modern life 🎨',
     password: 'historic',
+    image: '/neighborhoods/lower-haight.jpg',
+    stats: {
+      properties: 35,
+      rating: 4.7,
+      price: '$$$'
+    }
   }
 ];
 
@@ -32,13 +51,13 @@ export default function Home() {
   const router = useRouter();
   const [passwords, setPasswords] = useState({});
   const [errors, setErrors] = useState({});
+  const [hoveredCard, setHoveredCard] = useState(null);
 
   const handlePasswordChange = (id, value) => {
     setPasswords(prev => ({
       ...prev,
       [id]: value
     }));
-    // Clear error when typing
     if (errors[id]) {
       setErrors(prev => ({
         ...prev,
@@ -54,47 +73,91 @@ export default function Home() {
     } else {
       setErrors(prev => ({
         ...prev,
-        [neighborhood.id]: 'Incorrect password'
+        [neighborhood.id]: 'Oops! Wrong password 🤔'
       }));
     }
   };
 
   if (!user) {
     return (
-      <div className="landing-page">
-        <main className="main-content">
+      <div className="container">
+        <main>
           <section className="hero-section">
             <div className="hero-content">
               <h1 className="hero-title">
-                Find Your Perfect Home in San Francisco
+                Find Your
+                <br />
+                Happy Place
+                <br />
+                in SF! ✨
               </h1>
               <p className="hero-subtitle">
-                Discover beautiful properties in the city's most charming neighborhoods
+                Discover amazing neighborhoods and make yourself at home
               </p>
-              <Link href="/auth/signup" className="cta-button">
-                Get Started
-              </Link>
+              <div className="hero-buttons">
+                <Link href="/auth/signup" className="btn btn-primary">
+                  Get Started
+                </Link>
+                <Link href="/about" className="btn btn-secondary">
+                  Learn More
+                </Link>
+              </div>
             </div>
+            <div className="blob blob-1"></div>
+            <div className="blob blob-2"></div>
           </section>
 
-          <section className="neighborhoods-section">
-            <h2 className="section-title">Popular Neighborhoods</h2>
-            <div className="neighborhood-grid">
+          <section className="property-section">
+            <div className="section-header">
+              <h2 className="section-title">
+                Awesome Neighborhoods
+              </h2>
+              <p className="section-subtitle">Each with its own special character!</p>
+            </div>
+            <div className="property-grid">
               {neighborhoods.map((hood) => (
-                <div key={hood.id} className="neighborhood-card">
-                  <div className="card-image-container">
-                    <div className="card-image-placeholder">
-                      <span className="placeholder-icon">🏘️</span>
-                    </div>
+                <div 
+                  key={hood.id} 
+                  className="property-card"
+                  onMouseEnter={() => setHoveredCard(hood.id)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  <div className="property-image-container">
+                    {hood.image ? (
+                      <Image
+                        src={hood.image}
+                        alt={hood.name}
+                        width={400}
+                        height={300}
+                        className="property-image"
+                      />
+                    ) : (
+                      <div className="property-image-placeholder">
+                        <span>🏘️</span>
+                      </div>
+                    )}
+                    {hoveredCard === hood.id && (
+                      <div className="image-overlay">
+                        <div className="overlay-content">
+                          <div className="stat-item">
+                            <span>🏠</span> {hood.stats.properties} Properties
+                          </div>
+                          <div className="stat-item">
+                            <span>⭐</span> {hood.stats.rating} Rating
+                          </div>
+                          <div className="stat-item">
+                            <span>💰</span> {hood.stats.price}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="card-content">
-                    <h3 className="card-title">{hood.name}</h3>
-                    <p className="card-description">{hood.description}</p>
-                    <div className="card-footer">
-                      <Link href="/auth/signup" className="view-link">
-                        View Properties →
-                      </Link>
-                    </div>
+                  <div className="property-content">
+                    <h3 className="property-title">{hood.name}</h3>
+                    <p className="property-location">{hood.description}</p>
+                    <Link href="/auth/signup" className="btn btn-primary">
+                      Join Now
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -106,87 +169,91 @@ export default function Home() {
   }
 
   return (
-    <div className="dashboard-page">
-      <main className="main-content">
+    <div className="container">
+      <main>
         <WelcomeHeader />
         
-        <section className="neighborhoods-section">
-          <h2 className="section-title">Featured Neighborhoods</h2>
-          <div className="neighborhood-grid">
+        <section className="property-section">
+          <div className="section-header">
+            <h2 className="section-title">
+              Ready to Explore? 🗺️
+            </h2>
+            <p className="section-subtitle">Enter the secret password for each neighborhood</p>
+          </div>
+          <div className="property-grid">
             {neighborhoods.map((hood) => (
-              <div key={hood.id} className="neighborhood-card">
-                <div className="card-image-container">
-                  <div className="card-image-placeholder">
-                    <span className="placeholder-icon">🏘️</span>
-                  </div>
+              <div 
+                key={hood.id} 
+                className="property-card"
+                onMouseEnter={() => setHoveredCard(hood.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <div className="property-image-container">
+                  {hood.image ? (
+                    <Image
+                      src={hood.image}
+                      alt={hood.name}
+                      width={400}
+                      height={300}
+                      className="property-image"
+                    />
+                  ) : (
+                    <div className="property-image-placeholder">
+                      <span>🏘️</span>
+                    </div>
+                  )}
+                  {hoveredCard === hood.id && (
+                    <div className="image-overlay">
+                      <div className="overlay-content">
+                        <div className="stat-item">
+                          <span>🏠</span> {hood.stats.properties} Properties
+                        </div>
+                        <div className="stat-item">
+                          <span>⭐</span> {hood.stats.rating} Rating
+                        </div>
+                        <div className="stat-item">
+                          <span>💰</span> {hood.stats.price}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="card-content">
-                  <h3 className="card-title">{hood.name}</h3>
-                  <p className="card-description">{hood.description}</p>
-                  <div className="password-section">
-                    <div className="password-input-container">
-                      <span className="lock-icon">🔒</span>
+                <div className="property-content">
+                  <h3 className="property-title">{hood.name}</h3>
+                  <p className="property-location">{hood.description}</p>
+                  <form 
+                    className="access-form"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleAccess(hood);
+                    }}
+                  >
+                    <div className="input-group">
+                      <span className="input-icon">🔑</span>
                       <input
                         type="password"
-                        placeholder="Enter Password"
+                        placeholder="Enter the secret password"
                         value={passwords[hood.id] || ''}
                         onChange={(e) => handlePasswordChange(hood.id, e.target.value)}
-                        className="password-input"
+                        className="input"
                       />
                     </div>
                     <button 
-                      onClick={() => handleAccess(hood)}
-                      className="access-button"
+                      type="submit"
+                      className="btn btn-primary"
                     >
-                      Access →
+                      Unlock Access
                     </button>
-                  </div>
-                  {errors[hood.id] && (
-                    <p className="error-message">{errors[hood.id]}</p>
-                  )}
+                    {errors[hood.id] && (
+                      <p className="error-message">{errors[hood.id]}</p>
+                    )}
+                  </form>
                 </div>
               </div>
             ))}
           </div>
         </section>
       </main>
-
-      <style jsx>{`
-        .password-section {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          margin-top: 1rem;
-        }
-        .password-input-container {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          flex: 1;
-        }
-        .lock-icon {
-          font-size: 1.2rem;
-        }
-        .password-input {
-          flex: 1;
-          padding: 0.5rem;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          font-size: 0.9rem;
-        }
-        .access-button {
-          background: none;
-          border: none;
-          color: #FF5A5F;
-          cursor: pointer;
-          font-weight: 500;
-        }
-        .error-message {
-          color: #FF5A5F;
-          font-size: 0.8rem;
-          margin-top: 0.5rem;
-        }
-      `}</style>
     </div>
   );
 }
