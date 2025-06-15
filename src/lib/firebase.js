@@ -1,31 +1,77 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth, connectAuthEmulator, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCvNV0xDSYeljlqLFiKZ2MuGViso3Kc514",
-  authDomain: "neighborhoodbooking-126d7.firebaseapp.com",
-  projectId: "neighborhoodbooking-126d7",
-  storageBucket: "neighborhoodbooking-126d7.firebasestorage.app",
-  messagingSenderId: "177254574971",
-  appId: "1:177254574971:web:36820321b70051177f2bde",
-  measurementId: "G-3RVXN1LJCZ"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize variables
+let firebaseApp = null;
+let firebaseAuth = null;
+let firebaseDb = null;
+let firebaseAnalytics = null;
 
-// Initialize services
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Initialize Analytics only in browser environment
-let analytics = null;
+// Only initialize Firebase on the client side
 if (typeof window !== 'undefined') {
-  analytics = getAnalytics(app);
+  console.log('🔥 [Firebase] Starting client-side initialization...');
+  
+  try {
+    // Check if Firebase is already initialized
+    if (getApps().length > 0) {
+      console.log('🔥 [Firebase] Firebase already initialized, getting existing app');
+      firebaseApp = getApp();
+    } else {
+      console.log('🔥 [Firebase] Initializing new Firebase app');
+      firebaseApp = initializeApp(firebaseConfig);
+    }
+
+    // Initialize Auth
+    console.log('🔥 [Firebase] Initializing Auth...');
+    firebaseAuth = getAuth(firebaseApp);
+    setPersistence(firebaseAuth, browserLocalPersistence)
+      .then(() => console.log('🔥 [Firebase] Auth persistence set to local'))
+      .catch(error => console.error('🔥 [Firebase] Error setting auth persistence:', error));
+
+    // Initialize Firestore
+    console.log('🔥 [Firebase] Initializing Firestore...');
+    firebaseDb = getFirestore(firebaseApp);
+
+    // Initialize Analytics
+    console.log('🔥 [Firebase] Checking Analytics support...');
+    isSupported().then(yes => {
+      if (yes) {
+        firebaseAnalytics = getAnalytics(firebaseApp);
+        console.log('🔥 [Firebase] Analytics initialized');
+      } else {
+        console.log('🔥 [Firebase] Analytics not supported in this environment');
+      }
+    });
+
+    console.log('🔥 [Firebase] All services initialized successfully');
+  } catch (error) {
+    console.error('🔥 [Firebase] Error during initialization:', error);
+    console.error('🔥 [Firebase] Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    });
+  }
+} else {
+  console.log('🔥 [Firebase] Running in server environment, skipping initialization');
 }
 
-export { app, auth, db, analytics }; 
+// Export services
+export { firebaseApp, firebaseAuth, firebaseDb, firebaseAnalytics };
+export const auth = firebaseAuth;
+export const db = firebaseDb;
+export const analytics = firebaseAnalytics; 
