@@ -4,30 +4,25 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const properties = {
   'sunset': {
     id: 'sunset-beach-house',
     title: 'Sunset Beach House',
-    description: 'Beautiful beachfront property with stunning ocean views',
-    price: '350',
-    amenities: ['Ocean View', 'Private Deck', '3 Bedrooms', '2 Bathrooms'],
+    description: 'Experience the perfect blend of coastal living and urban convenience in this stunning beachfront property. With panoramic ocean views, modern amenities, and a prime location in the heart of the Sunset District, this home offers an unparalleled San Francisco lifestyle. Enjoy morning walks along the beach, breathtaking sunsets from your private deck, and easy access to local cafes and restaurants.',
     image: '/sunset-house.jpg'
   },
   'mission': {
     id: 'mission',
     title: 'Mission Modern Loft',
     description: 'Contemporary loft in the heart of the Mission district',
-    price: '275',
-    amenities: ['High Ceilings', 'Modern Kitchen', '2 Bedrooms', '2 Bathrooms'],
     image: '/mission-loft.jpg'
   },
   'lower-haight': {
     id: 'lowerhaight',
     title: 'Lower Haight Victorian',
     description: 'Classic San Francisco Victorian in Lower Haight',
-    price: '300',
-    amenities: ['Period Details', 'Bay Windows', '3 Bedrooms', '1.5 Bathrooms'],
     image: '/haight-victorian.jpg'
   }
 };
@@ -44,7 +39,6 @@ export default function NeighborhoodPage({ params }) {
 
   const handleBookingClick = () => {
     if (!user) {
-      // Store the current URL to redirect back after sign in
       sessionStorage.setItem('redirectAfterAuth', window.location.pathname);
       router.push('/auth/signin');
       return;
@@ -54,29 +48,23 @@ export default function NeighborhoodPage({ params }) {
   };
 
   return (
-    <div className="property-page">
-      <div className="property-container">
-        <div className="property-image-placeholder">
-          <span className="placeholder-icon">🏠</span>
+    <div className="neighborhood-page">
+      <div className="neighborhood-container">
+        <div className="neighborhood-image">
+          <Image
+            src={property.image}
+            alt={property.title}
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+          />
+          <div className="image-overlay"></div>
         </div>
         
-        <div className="property-content">
-          <h1 className="property-title">{property.title}</h1>
-          <p className="property-description">{property.description}</p>
+        <div className="neighborhood-content">
+          <h1 className="neighborhood-title">{property.title}</h1>
+          <p className="neighborhood-description">{property.description}</p>
           
-          <div className="property-details">
-            <div className="price-section">
-              <span className="price">${property.price}</span>
-              <span className="price-period">per night</span>
-            </div>
-            
-            <div className="amenities">
-              {property.amenities.map((amenity, index) => (
-                <span key={index} className="amenity-tag">{amenity}</span>
-              ))}
-            </div>
-          </div>
-
           <button 
             onClick={handleBookingClick}
             className="booking-button"
@@ -87,95 +75,97 @@ export default function NeighborhoodPage({ params }) {
       </div>
 
       <style jsx>{`
-        .property-page {
+        .neighborhood-page {
+          min-height: 100vh;
+          background: var(--background-color);
           padding: 2rem;
-          max-width: 1200px;
+        }
+
+        .neighborhood-container {
+          max-width: 1000px;
           margin: 0 auto;
-        }
-
-        .property-container {
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background: var(--house-orange);
+          border-radius: var(--border-radius);
           overflow: hidden;
+          box-shadow: 0 4px 20px rgba(139, 69, 19, 0.05);
         }
 
-        .property-image-placeholder {
-          background: #f0f0f0;
+        .neighborhood-image {
+          position: relative;
           height: 400px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          width: 100%;
         }
 
-        .placeholder-icon {
-          font-size: 48px;
+        .image-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(to bottom, rgba(139, 69, 19, 0.1), rgba(139, 69, 19, 0.3));
         }
 
-        .property-content {
-          padding: 2rem;
+        .neighborhood-content {
+          padding: 3rem;
+          background: rgba(255,255,255,0.92);
+          box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+          border-radius: 32px;
         }
 
-        .property-title {
-          font-size: 2rem;
-          margin: 0 0 1rem;
-          color: #2d3748;
+        .neighborhood-title {
+          font-size: 2.5rem;
+          color: var(--primary-color);
+          margin: 0 0 1.5rem;
+          font-weight: 600;
         }
 
-        .property-description {
-          color: #4a5568;
-          margin-bottom: 2rem;
-        }
-
-        .property-details {
-          margin-bottom: 2rem;
-        }
-
-        .price-section {
-          margin-bottom: 1rem;
-        }
-
-        .price {
-          font-size: 1.5rem;
-          font-weight: bold;
-          color: #2d3748;
-        }
-
-        .price-period {
-          color: #718096;
-          margin-left: 0.5rem;
-        }
-
-        .amenities {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          margin-bottom: 2rem;
-        }
-
-        .amenity-tag {
-          background: #edf2f7;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          font-size: 0.875rem;
-          color: #4a5568;
+        .neighborhood-description {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: var(--text-color);
+          margin-bottom: 2.5rem;
         }
 
         .booking-button {
           width: 100%;
-          padding: 1rem;
-          background-color: #4299e1;
-          color: white;
+          padding: 1.25rem;
+          background: white;
+          color: var(--house-orange);
           border: none;
-          border-radius: 4px;
-          font-size: 1rem;
+          border-radius: 50px;
+          font-size: 1.1rem;
           font-weight: 500;
           cursor: pointer;
-          transition: background-color 0.2s;
+          transition: all 0.2s ease;
         }
 
         .booking-button:hover {
-          background-color: #3182ce;
+          background: var(--house-orange);
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(211, 84, 0, 0.2);
+        }
+
+        .booking-button:active {
+          transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+          .neighborhood-page {
+            padding: 1rem;
+          }
+
+          .neighborhood-content {
+            padding: 2rem;
+          }
+
+          .neighborhood-title {
+            font-size: 2rem;
+          }
+
+          .neighborhood-description {
+            font-size: 1rem;
+          }
         }
       `}</style>
     </div>
