@@ -227,81 +227,84 @@ export default function BookingForm({ propertyId, propertyName }) {
 
       <style jsx>{`
         .booking-form {
-          background: white;
-          padding: 1.5rem;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background: #fff8f3;
+          padding: 2rem;
+          border-radius: 24px;
+          box-shadow: 0 4px 24px rgba(139, 69, 19, 0.06);
         }
 
         .form-group {
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
         }
 
         label {
           display: block;
           margin-bottom: 0.5rem;
-          font-weight: 500;
+          font-weight: 600;
+          color: var(--primary-color);
         }
 
-        input {
+        input[type="date"] {
           width: 100%;
-          padding: 0.5rem;
-          border: 1px solid #ddd;
-          border-radius: 4px;
+          padding: 1rem;
+          border: none;
+          border-radius: 32px;
+          background: #fff;
+          font-size: 1.1rem;
+          color: var(--text-color);
+          box-shadow: 0 1px 4px rgba(139, 69, 19, 0.04);
+          transition: box-shadow 0.2s;
+        }
+
+        input[type="date"]:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px var(--house-orange);
         }
 
         input:disabled {
-          background-color: #f5f5f5;
+          background-color: #f7f7f7;
           cursor: not-allowed;
         }
 
         .error-message {
           color: #e53e3e;
           margin-bottom: 1rem;
-          padding: 0.5rem;
+          padding: 0.75rem 1rem;
           background-color: #fff5f5;
-          border-radius: 4px;
+          border-radius: 12px;
+          font-weight: 500;
         }
 
         .suggestion {
           margin-top: 0.5rem;
-          font-size: 0.875rem;
-          color: #4a5568;
+          font-size: 0.95rem;
+          color: var(--primary-color);
           font-style: italic;
-        }
-
-        .stay-duration {
-          margin: 1rem 0;
-          padding: 1rem;
-          background-color: #f7fafc;
-          border-radius: 4px;
-          text-align: center;
-        }
-
-        .stay-duration p {
-          margin: 0;
-          color: #2d3748;
-          font-weight: 500;
         }
 
         .submit-button {
           width: 100%;
-          padding: 0.75rem;
-          background-color: #4299e1;
+          padding: 1.1rem;
+          background-color: var(--house-orange);
           color: white;
           border: none;
-          border-radius: 4px;
-          font-weight: 500;
+          border-radius: 50px;
+          font-size: 1.1rem;
+          font-weight: 600;
           cursor: pointer;
-          transition: background-color 0.2s;
+          transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+          box-shadow: 0 2px 8px rgba(211, 84, 0, 0.06);
         }
 
-        .submit-button:hover {
-          background-color: #3182ce;
+        .submit-button:hover:not(:disabled) {
+          background: #d35400;
+          color: #fff;
+          box-shadow: 0 4px 16px rgba(211, 84, 0, 0.12);
         }
 
         .submit-button:disabled {
-          background-color: #a0aec0;
+          background-color: #f7cac0;
+          color: #fff;
           cursor: not-allowed;
         }
       `}</style>

@@ -155,11 +155,12 @@ export default function PropertyPage({ params }) {
             <h2>Book Your Stay</h2>
             {hasExistingBooking ? (
               <div className="contact-message">
-                <p>You already have an active booking.</p>
-                <p>Please contact Thomas to make any changes to your reservation:</p>
+                <div className="contact-icon">🔒</div>
+                <h3 className="contact-title">You already have an active booking.</h3>
+                <p className="contact-desc">Please contact Thomas to make any changes to your reservation:</p>
                 <div className="contact-info">
-                  <p>📧 Email: thomas@example.com</p>
-                  <p>📞 Phone: (555) 123-4567</p>
+                  <div className="contact-row"><span className="contact-label">📧 Email:</span> <a href="mailto:thomas@example.com" className="contact-link">thomas@example.com</a></div>
+                  <div className="contact-row"><span className="contact-label">📞 Phone:</span> <a href="tel:5551234567" className="contact-link">(555) 123-4567</a></div>
                 </div>
               </div>
             ) : (

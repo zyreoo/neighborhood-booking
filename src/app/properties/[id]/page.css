@@ -204,4 +204,56 @@
 .auth-required h2 {
   color: var(--accent-color);
   margin-bottom: 1rem;
+}
+
+/* Contact message styles for active booking */
+.contact-message {
+  background: #fff8f3;
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 24px rgba(139, 69, 19, 0.06);
+  text-align: center;
+  margin: 2rem 0;
+}
+.contact-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.contact-title {
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.contact-desc {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.contact-row {
+  background: #fff;
+  border-radius: 16px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(139, 69, 19, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+}
+.contact-label {
+  font-weight: 600;
+  color: var(--house-orange);
+}
+.contact-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+.contact-link:hover {
+  text-decoration: underline;
 } 
