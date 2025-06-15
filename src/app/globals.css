@@ -40,37 +40,61 @@ body {
 /* Hero Section */
 .hero-section {
   position: relative;
-  padding: 6rem 0;
+  height: 100vh;
+  width: 100%;
   overflow: hidden;
-  background-color: var(--accent);
-  border-radius: 0 0 60px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 600px;
+  color: white;
+  max-width: 800px;
+  padding: 2rem;
 }
 
 .hero-title {
-  font-size: 5rem;
-  font-weight: 800;
-  color: var(--text);
-  margin-bottom: 1.5rem;
-  line-height: 1;
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
-  font-size: 1.75rem;
-  color: var(--text);
-  margin-bottom: 2.5rem;
-  line-height: 1.4;
-  opacity: 0.9;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
+  justify-content: center;
 }
 
 /* Buttons */
@@ -92,13 +116,20 @@ body {
 
 .btn-primary {
   background-color: var(--primary);
-  color: var(--text-light);
-  box-shadow: 0 4px 0 darken(var(--primary), 10%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:hover {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 darken(var(--primary), 10%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
@@ -308,7 +339,7 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
   }
   
   .hero-subtitle {
@@ -325,5 +356,9 @@ body {
   
   .container {
     padding: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
   }
 }

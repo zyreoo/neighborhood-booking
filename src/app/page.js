@@ -11,21 +11,21 @@ const neighborhoods = [
   {
     id: 'sunset',
     name: 'Sunset District',
-    description: 'Ocean views & laid-back vibes 🌊',
+    description: 'Ocean views & laid-back vibes',
     password: 'oceanview',
     image: '/neighborhoods/sunset.jpg'
   },
   {
     id: 'mission',
     name: 'Mission District',
-    description: 'Food & culture paradise 🌮',
+    description: 'Food & culture paradise',
     password: 'foodscene',
     image: '/neighborhoods/mission.jpg'
   },
   {
     id: 'lower-haight',
     name: 'Lower Haight',
-    description: 'Historic charm meets modern life 🎨',
+    description: 'Historic charm meets modern life',
     password: 'historic',
     image: '/neighborhoods/lower-haight.jpg' 
   }
@@ -58,7 +58,7 @@ export default function Home() {
     } else {
       setErrors(prev => ({
         ...prev,
-        [neighborhood.id]: 'Oops! Wrong password 🤔'
+        [neighborhood.id]: 'Incorrect password'
       }));
     }
   };
@@ -68,36 +68,36 @@ export default function Home() {
       <div className="container">
         <main>
           <section className="hero-section">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="hero-video"
+            >
+              <source src="/background.mp4" type="video/mp4" />
+            </video>
+            <div className="hero-overlay"></div>
             <div className="hero-content">
               <h1 className="hero-title">
-                Find Your
-                <br />
-                Happy Place
-                <br />
-                in SF! ✨
+                Welcome to San Francisco
               </h1>
               <p className="hero-subtitle">
-                Discover amazing neighborhoods and make yourself at home
+                Please choose your house
               </p>
               <div className="hero-buttons">
                 <Link href="/auth/signup" className="btn btn-primary">
                   Get Started
                 </Link>
-                <Link href="/about" className="btn btn-secondary">
-                  Learn More
-                </Link>
               </div>
             </div>
-            <div className="blob blob-1"></div>
-            <div className="blob blob-2"></div>
           </section>
 
           <section className="property-section">
             <div className="section-header">
               <h2 className="section-title">
-                Awesome Neighborhoods
+                Available Neighborhoods
               </h2>
-              <p className="section-subtitle">Each with its own special character!</p>
             </div>
             <div className="property-grid">
               {neighborhoods.map((hood) => (
@@ -146,9 +146,9 @@ export default function Home() {
         <section className="property-section">
           <div className="section-header">
             <h2 className="section-title">
-              Ready to Explore? 🗺️
+              Choose Your Neighborhood
             </h2>
-            <p className="section-subtitle">Enter the secret password for each neighborhood</p>
+            <p className="section-subtitle">Enter the password to access each area</p>
           </div>
           <div className="property-grid">
             {neighborhoods.map((hood) => (
@@ -184,10 +184,9 @@ export default function Home() {
                     }}
                   >
                     <div className="input-group">
-                      <span className="input-icon">🔑</span>
                       <input
                         type="password"
-                        placeholder="Enter the secret password"
+                        placeholder="Enter the password"
                         value={passwords[hood.id] || ''}
                         onChange={(e) => handlePasswordChange(hood.id, e.target.value)}
                         className="input"
@@ -197,7 +196,7 @@ export default function Home() {
                       type="submit"
                       className="btn btn-primary"
                     >
-                      Unlock Access
+                      Access
                     </button>
                     {errors[hood.id] && (
                       <p className="error-message">{errors[hood.id]}</p>
