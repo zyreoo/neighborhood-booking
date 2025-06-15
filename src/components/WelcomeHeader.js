@@ -27,126 +27,82 @@ export default function WelcomeHeader() {
 
   return (
     <div className="welcome-section">
+      <div className="welcome-video-container">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="welcome-video"
+        >
+          <source src="/background.mp4" type="video/mp4" />
+        </video>
+        <div className="welcome-overlay"></div>
+      </div>
       <div className="welcome-content">
         <div className="welcome-icon">👋</div>
         <h1 className="welcome-title">
           Welcome back, {user.displayName || 'Guest'}!
         </h1>
         <p className="welcome-subtitle">
-          Ready to explore more beautiful homes in San Francisco?
+          Ready to choose your home in San Francisco?
         </p>
       </div>
-      
+
       <style jsx>{`
         .welcome-section {
-          padding: 3rem 2rem;
-          background: linear-gradient(135deg, var(--background), var(--neutral));
-          border-radius: var(--border-radius);
-          margin: 2rem auto;
           position: relative;
+          margin-bottom: 2rem;
+          border-radius: 12px;
           overflow: hidden;
+        }
+
+        .welcome-video-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+        }
+
+        .welcome-video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .welcome-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
         }
 
         .welcome-content {
           position: relative;
-          z-index: 2;
-          max-width: 800px;
-          margin: 0 auto;
+          z-index: 1;
+          padding: 3rem 2rem;
           text-align: center;
+          color: white;
         }
 
         .welcome-icon {
-          font-size: 3rem;
-          margin-bottom: 1.5rem;
-          animation: wave 2s infinite;
-          display: inline-block;
-        }
-
-        @keyframes wave {
-          0%, 100% { transform: rotate(0deg); }
-          25% { transform: rotate(-20deg); }
-          75% { transform: rotate(20deg); }
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
         }
 
         .welcome-title {
           font-size: 2.5rem;
-          color: var(--primary);
-          margin-bottom: 1rem;
-          font-weight: 700;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
         }
 
         .welcome-subtitle {
           font-size: 1.25rem;
-          color: var(--text-dark);
-          margin-bottom: 2.5rem;
-        }
-
-        .stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 2rem;
-          max-width: 600px;
-          margin: 0 auto;
-        }
-
-        .stat-item {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          padding: 1.5rem;
-          background: var(--background);
-          border-radius: var(--border-radius);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-          transition: var(--transition);
-        }
-
-        .stat-item:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-icon {
-          font-size: 2rem;
-        }
-
-        .stat-content {
-          text-align: left;
-        }
-
-        .stat-value {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: var(--primary);
-          line-height: 1;
-          margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-          font-size: 0.875rem;
-          color: var(--neutral);
-        }
-
-        @media (max-width: 768px) {
-          .welcome-section {
-            padding: 2rem 1rem;
-          }
-
-          .welcome-title {
-            font-size: 2rem;
-          }
-
-          .welcome-subtitle {
-            font-size: 1rem;
-          }
-
-          .stats {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-
-          .stat-item {
-            padding: 1rem;
-          }
+          opacity: 0.9;
         }
       `}</style>
     </div>

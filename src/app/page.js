@@ -146,7 +146,7 @@ export default function Home() {
         <section className="property-section">
           <div className="section-header">
             <h2 className="section-title">
-              Choose Your Neighborhood
+              Discover Your Perfect SF Home
             </h2>
             <p className="section-subtitle">Enter the password to access each area</p>
           </div>
