@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import '../../../styles/main.css';
@@ -95,8 +94,8 @@ export default function SignUp() {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>Create Account</h1>
-          <p>Sign up to start booking properties</p>
+          <h1>Welcome</h1>
+          <p>Create your account to get started</p>
         </div>
 
         {error && <div className="auth-error">{error}</div>}
@@ -111,6 +110,7 @@ export default function SignUp() {
               onChange={(e) => setName(e.target.value)}
               required
               disabled={loading}
+              placeholder="Enter your full name"
             />
           </div>
 
@@ -123,6 +123,7 @@ export default function SignUp() {
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
+              placeholder="Enter your email"
             />
           </div>
 
@@ -136,7 +137,9 @@ export default function SignUp() {
               required
               disabled={loading}
               minLength={6}
+              placeholder="Create a password"
             />
+            <span className="auth-input-help">Must be at least 6 characters</span>
           </div>
 
           <button 
@@ -144,29 +147,14 @@ export default function SignUp() {
             className="auth-submit"
             disabled={loading}
           >
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
-
-        <div className="auth-divider">
-          <span>or continue with</span>
-        </div>
-
-        <div className="auth-social-buttons">
-          <button
-            onClick={() => signIn('google')}
-            className="auth-social-button"
-            disabled={loading}
-          >
-            <img src="/google-icon.svg" alt="Google" width="20" height="20" />
-            Sign in with Google
-          </button>
-        </div>
 
         <div className="auth-footer">
           <p>
             Already have an account?{' '}
-            <Link href="/auth/signin">Sign in</Link>
+            <Link href="/auth/signin" className="auth-link">Sign in</Link>
           </p>
         </div>
       </div>
