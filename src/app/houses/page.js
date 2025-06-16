@@ -1,12 +1,12 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function HousesPage() {
-  const { data: session, status } = useSession();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   // This would come from your database
@@ -40,7 +40,7 @@ export default function HousesPage() {
     }
   ];
 
-  if (status === 'loading') {
+  if (loading) {
     return (
       <div className="loading-screen">
         <div className="loading-content">
@@ -53,7 +53,7 @@ export default function HousesPage() {
     );
   }
 
-  if (!session) {
+  if (!user) {
     router.push('/auth/signup');
     return null;
   }

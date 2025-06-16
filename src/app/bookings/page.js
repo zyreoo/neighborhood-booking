@@ -166,121 +166,163 @@ export default function BookingsPage() {
 
       <style jsx>{`
         .bookings-page {
-          padding: 2rem;
+          padding: calc(var(--spacing-unit) * 2);
           max-width: 1200px;
           margin: 0 auto;
         }
 
         h1 {
-          margin-bottom: 2rem;
-          color: #2d3748;
+          margin-bottom: calc(var(--spacing-unit) * 2);
+          color: var(--primary-color);
+          font-size: 2rem;
+          font-weight: 600;
         }
 
         .bookings-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 2rem;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: calc(var(--spacing-unit) * 2);
         }
 
         .booking-card {
           background: white;
-          border-radius: 8px;
-          padding: 1.5rem;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          border-radius: var(--border-radius);
+          padding: calc(var(--spacing-unit) * 1.5);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .booking-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
 
         .booking-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 1rem;
+          margin-bottom: var(--spacing-unit);
+          padding-bottom: var(--spacing-unit);
+          border-bottom: 1px solid var(--background-color);
         }
 
         .booking-header h3 {
           margin: 0;
-          color: #2d3748;
+          color: var(--primary-color);
+          font-size: 1.25rem;
+          font-weight: 600;
         }
 
         .status-badge {
-          padding: 0.25rem 0.75rem;
+          padding: 0.5rem 1rem;
           border-radius: 9999px;
           color: white;
           font-size: 0.875rem;
           font-weight: 500;
+          text-transform: capitalize;
         }
 
         .booking-dates {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-          margin-bottom: 1rem;
+          gap: var(--spacing-unit);
         }
 
         .date-group label {
           display: block;
-          color: #718096;
+          color: var(--text-color);
           font-size: 0.875rem;
-          margin-bottom: 0.25rem;
+          margin-bottom: 0.5rem;
+          opacity: 0.8;
         }
 
         .date-group p {
           margin: 0;
-          color: #2d3748;
+          color: var(--text-color);
           font-weight: 500;
-        }
-
-        .stay-duration {
-          margin-bottom: 1rem;
-          padding: 0.5rem;
-          background-color: #f7fafc;
-          border-radius: 4px;
-          text-align: center;
-        }
-
-        .stay-duration p {
-          margin: 0;
-          color: #2d3748;
-          font-weight: 500;
-        }
-
-        .cancel-button {
-          width: 100%;
-          padding: 0.75rem;
-          background-color: #e53e3e;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-
-        .cancel-button:hover {
-          background-color: #c53030;
+          font-size: 1rem;
         }
 
         .no-bookings {
           text-align: center;
-          padding: 3rem;
+          padding: calc(var(--spacing-unit) * 4);
           background: white;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          border-radius: var(--border-radius);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .no-bookings p {
+          color: var(--text-color);
+          margin-bottom: var(--spacing-unit);
+          font-size: 1.1rem;
         }
 
         .browse-button {
-          padding: 0.75rem 1.5rem;
-          background-color: #4299e1;
+          background-color: var(--accent-color);
           color: white;
           border: none;
-          border-radius: 4px;
-          font-weight: 500;
+          padding: 12px 24px;
+          border-radius: var(--border-radius);
           cursor: pointer;
-          transition: background-color 0.2s;
-          margin-top: 1rem;
+          font-weight: 500;
+          transition: background-color 0.2s ease;
         }
 
         .browse-button:hover {
-          background-color: #3182ce;
+          background-color: #6B8B77;
+        }
+
+        .loading-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 300px;
+          background: white;
+          border-radius: var(--border-radius);
+          padding: calc(var(--spacing-unit) * 2);
+        }
+
+        .loading-spinner {
+          border: 4px solid var(--background-color);
+          border-top: 4px solid var(--accent-color);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          animation: spin 1s linear infinite;
+          margin-bottom: var(--spacing-unit);
+        }
+
+        .error-container {
+          text-align: center;
+          padding: calc(var(--spacing-unit) * 2);
+          margin: calc(var(--spacing-unit) * 2) auto;
+          max-width: 400px;
+          background: white;
+          border-radius: var(--border-radius);
+          color: #e53e3e;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .retry-button {
+          margin-top: var(--spacing-unit);
+          padding: 12px 24px;
+          background-color: var(--accent-color);
+          color: white;
+          border: none;
+          border-radius: var(--border-radius);
+          cursor: pointer;
+          font-weight: 500;
+          transition: background-color 0.2s ease;
+        }
+
+        .retry-button:hover {
+          background-color: #6B8B77;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
     </div>
