@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import '../../../styles/main.css';
 import '../../../styles/auth.css';
+import { useAuth } from '../../../lib/auth';
 
 console.log('DEBUG: SignUp page module loaded');
 
@@ -17,6 +18,7 @@ export default function SignUp() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { signUp } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,67 +27,36 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      console.log('DEBUG: Calling signup API');
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await res.json();
-      console.log('DEBUG: Signup API response:', { status: res.status, data });
-
-      if (!res.ok) {
-        if (data.error === 'This email is already registered') {
-          console.log('DEBUG: Email already registered');
-          setError(
-            <div>
-              This email is already registered. 
-              <Link href="/auth/signin" className="auth-link ml-2">
-                Sign in instead
-              </Link>
-            </div>
-          );
-        } else {
-          console.log('DEBUG: Signup error:', data.error);
-          setError(data.error || 'Something went wrong during signup');
-        }
-        setLoading(false);
-        return;
-      }
-
-      console.log('DEBUG: Signup successful, attempting automatic sign in');
-      // After successful registration, try to sign in
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      console.log('DEBUG: Auto sign in result:', result);
-
-      if (result.error) {
-        console.log('DEBUG: Auto sign in error:', result.error);
-        setError('Error signing in after registration');
-        setLoading(false);
+      console.log('DEBUG: Calling Firebase signup');
+      await signUp(email, password, name);
+      console.log('DEBUG: Signup successful');
+      
+      // Check for stored redirect URL
+      const redirectUrl = sessionStorage.getItem('redirectAfterAuth');
+      console.log('DEBUG: Redirect URL from storage:', redirectUrl);
+      
+      if (redirectUrl) {
+        console.log('DEBUG: Redirecting to:', redirectUrl);
+        sessionStorage.removeItem('redirectAfterAuth');
+        router.push(redirectUrl);
       } else {
-        console.log('DEBUG: Auto sign in successful');
-        // Check for stored redirect URL
-        const redirectUrl = sessionStorage.getItem('redirectAfterAuth');
-        console.log('DEBUG: Redirect URL from storage:', redirectUrl);
-        
-        if (redirectUrl) {
-          console.log('DEBUG: Redirecting to:', redirectUrl);
-          sessionStorage.removeItem('redirectAfterAuth');
-          router.push(redirectUrl);
-        } else {
-          console.log('DEBUG: No redirect URL, going to home');
-          router.push('/');
-        }
+        console.log('DEBUG: No redirect URL, going to home');
+        router.push('/');
       }
     } catch (error) {
-      console.error('DEBUG: Unexpected error during signup:', error);
-      setError('An unexpected error occurred. Please try again.');
+      console.error('DEBUG: Signup error:', error);
+      if (error.code === 'auth/email-already-in-use') {
+        setError(
+          <div>
+            This email is already registered. 
+            <Link href="/auth/signin" className="auth-link ml-2">
+              Sign in instead
+            </Link>
+          </div>
+        );
+      } else {
+        setError(error.message || 'Something went wrong during signup');
+      }
       setLoading(false);
     }
   };

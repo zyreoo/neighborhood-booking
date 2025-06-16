@@ -60,19 +60,19 @@ export default function SignIn() {
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
       case 'auth/invalid-email':
-        return 'Invalid email address';
+        return 'Please enter a valid email address';
       case 'auth/user-disabled':
-        return 'This account has been disabled';
+        return 'This account has been disabled. Please contact support';
       case 'auth/user-not-found':
-        return 'No account found with this email';
+        return 'No account found with this email. Please check your email or sign up';
       case 'auth/wrong-password':
-        return 'Incorrect password';
+        return 'The password you entered is incorrect. Please try again';
       case 'auth/too-many-requests':
-        return 'Too many attempts. Please try again later';
+        return 'Too many failed attempts. Please try again in a few minutes';
       case 'auth/network-request-failed':
-        return 'Network error. Please check your connection';
+        return 'Unable to connect. Please check your internet connection';
       default:
-        return 'An error occurred. Please try again';
+        return 'Unable to sign in. Please check your email and password';
     }
   };
 
