@@ -78,8 +78,9 @@ export default function BookingForm({ propertyId, propertyName }) {
   };
 
   const validateDates = (startDate, endDate) => {
-    const checkInDate = new Date(startDate);
-    const checkOutDate = new Date(endDate);
+    // Create dates in UTC to avoid timezone issues
+    const checkInDate = new Date(startDate + 'T00:00:00Z');
+    const checkOutDate = new Date(endDate + 'T00:00:00Z');
     
     // Calculate the difference in days
     const diffTime = checkOutDate.getTime() - checkInDate.getTime();
@@ -99,9 +100,9 @@ export default function BookingForm({ propertyId, propertyName }) {
 
   const isDateBooked = (date) => {
     return bookedDates.some(booking => {
-      const bookingStart = new Date(booking.start);
-      const bookingEnd = new Date(booking.end);
-      const checkDate = new Date(date);
+      const bookingStart = new Date(booking.start + 'T00:00:00Z');
+      const bookingEnd = new Date(booking.end + 'T00:00:00Z');
+      const checkDate = new Date(date + 'T00:00:00Z');
       return checkDate >= bookingStart && checkDate <= bookingEnd;
     });
   };
@@ -143,7 +144,7 @@ export default function BookingForm({ propertyId, propertyName }) {
   // Calculate minimum check-out date (14 days from check-in)
   const getMinCheckOut = () => {
     if (!checkIn) return '';
-    const minDate = new Date(checkIn);
+    const minDate = new Date(checkIn + 'T00:00:00Z');
     minDate.setDate(minDate.getDate() + 14);
     return minDate.toISOString().split('T')[0];
   };

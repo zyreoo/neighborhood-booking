@@ -60,8 +60,8 @@ export default function AdminDashboard() {
             ...data,
             createdAt: data.createdAt?.toDate?.(),
             updatedAt: data.updatedAt?.toDate?.(),
-            checkIn: new Date(data.checkIn),
-            checkOut: new Date(data.checkOut),
+            checkIn: new Date(data.checkIn + 'T00:00:00Z'),
+            checkOut: new Date(data.checkOut + 'T00:00:00Z'),
             userEmail: userDetails?.email || 'Unknown',
             userName: userDetails?.name || 'Unknown'
           };
@@ -91,8 +91,8 @@ export default function AdminDashboard() {
   const filteredBookings = bookings.filter(booking => {
     const bookingStart = new Date(booking.checkIn);
     const bookingEnd = new Date(booking.checkOut);
-    const filterStart = new Date(startDate);
-    const filterEnd = new Date(endDate);
+    const filterStart = new Date(startDate + 'T00:00:00Z');
+    const filterEnd = new Date(endDate + 'T00:00:00Z');
     return bookingStart <= filterEnd && bookingEnd >= filterStart;
   });
 
@@ -176,8 +176,8 @@ export default function AdminDashboard() {
                 .filter(([propertyId]) => propertyId === house.id)
                 .flatMap(([_, occupants]) => 
                   occupants.filter(booking => {
-                    const filterStart = new Date(startDate);
-                    const filterEnd = new Date(endDate);
+                    const filterStart = new Date(startDate + 'T00:00:00Z');
+                    const filterEnd = new Date(endDate + 'T00:00:00Z');
                     return new Date(booking.checkIn) <= filterEnd && new Date(booking.checkOut) >= filterStart;
                   })
                 );
@@ -227,8 +227,8 @@ export default function AdminDashboard() {
                        booking.propertyId === 'mission-house' ? 'Mission House' :
                        'Lower Haight House'}
                     </td>
-                    <td>{booking.checkIn.toLocaleDateString()}</td>
-                    <td>{booking.checkOut.toLocaleDateString()}</td>
+                    <td>{booking.checkIn.toLocaleDateString('en-US', { timeZone: 'UTC' })}</td>
+                    <td>{booking.checkOut.toLocaleDateString('en-US', { timeZone: 'UTC' })}</td>
                     <td>
                       <span className={`status-badge ${
                         booking.status === 'confirmed' ? 'status-confirmed' : 

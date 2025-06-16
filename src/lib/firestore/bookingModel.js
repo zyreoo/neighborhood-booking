@@ -5,8 +5,8 @@ const COLLECTION_NAME = 'bookings';
 
 const validateBookingDates = (checkIn, checkOut) => {
   const now = new Date();
-  const checkInDate = new Date(checkIn);
-  const checkOutDate = new Date(checkOut);
+  const checkInDate = new Date(checkIn + 'T00:00:00Z');
+  const checkOutDate = new Date(checkOut + 'T00:00:00Z');
   
   // Check if dates are in the future
   if (checkInDate < now) {
@@ -19,7 +19,7 @@ const validateBookingDates = (checkIn, checkOut) => {
   }
 
   // Check if booking is within summer months (June to August)
-  const month = checkInDate.getMonth();
+  const month = checkInDate.getUTCMonth();
   if (month < 5 || month > 7) { // 5 = June, 7 = August (0-based months)
     throw new Error('Bookings are only available during summer months (June to August)');
   }
